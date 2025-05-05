@@ -1,20 +1,14 @@
-import { useRoutes } from "react-router-dom"
-import { Toaster } from "react-hot-toast"
-import routes from "./routes.jsx"
+import { Routes, Route } from "react-router-dom";
+import Layout from "./components/Layout";
+import SupplierPage from "./pages/suppliers/SupplierPage";
 
-
- const App = () =>{
-
-  let element = useRoutes(routes);
-
-  return(
-    <>
-      {element}
-      <Toaster
-        position="bottom-right"
-        reverseOrder={false}
-      />
-    </>
-  )
+export default function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<div>Bienvenido a Almacenadora G1</div>} />
+        <Route path="suppliers/*" element={<SupplierPage />} />
+      </Route>
+    </Routes>
+  );
 }
-export default App;
