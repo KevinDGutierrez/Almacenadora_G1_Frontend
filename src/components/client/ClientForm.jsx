@@ -2,12 +2,12 @@ import { TextField, Button, Paper, Typography, Box } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { createClient, getClientById, updateClient } from "../../services/clientService.js"; // Asegúrate de tener estos servicios
+import { createClient, getClientById, updateClient } from "../../services/clientService.js";
 
 export default function ClientForm() {
   const { id } = useParams(); // Si hay ID es para editar
   const navigate = useNavigate();
-  
+
   // Estado del formulario
   const [form, setForm] = useState({
     name: "",
@@ -15,7 +15,7 @@ export default function ClientForm() {
     phone: "",
     address: ""
   });
-  
+
   const [isAdmin] = useState(true); // Lo cambiarías por autenticación real más adelante
 
   // Efecto para cargar datos cuando estamos editando
@@ -25,7 +25,7 @@ export default function ClientForm() {
       navigate("/clients");
       return;
     }
-    
+
     const loadClient = async () => {
       try {
         const clientData = await getClientById(id);
@@ -41,7 +41,7 @@ export default function ClientForm() {
         navigate("/clients");
       }
     };
-  
+
     if (id) loadClient();
   }, [id]);
 

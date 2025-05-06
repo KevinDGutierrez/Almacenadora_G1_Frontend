@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Ruta base correcta según el server.js
-const BASE_URL = "http://localhost:3000/AlmacendoraG1/vlm/clientes";  // Cambié la URL para clientes
+const BASE_URL = "http://localhost:3000/AlmacenadoraG1/vlm/client";  // Cambié la URL para clientes
 
 // Si no estás usando token aún, simplemente no lo incluyas
 const HEADERS = {}; // Vacío por ahora, sin autenticación
@@ -53,7 +53,8 @@ export const deleteClient = async (id) => {
 // Obtener cliente por ID
 export const getClientById = async (id) => {
   try {
-    const response = await axios.get(`${BASE_URL}/${id}`, { headers: HEADERS });
+    // Corrigiendo la URL para obtener el cliente por ID
+    const response = await axios.get(`${BASE_URL}/${id}`);
     return response.data;  // Devuelve el cliente encontrado
   } catch (error) {
     console.error("Error al obtener cliente por ID", error.response?.data || error);
