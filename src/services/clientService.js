@@ -60,3 +60,51 @@ export const getClientById = async (id) => {
     throw error;
   }
 };
+
+
+// Registrar entrada
+export const registrarEntrada = async (entradaData) => {
+  try {
+    const response = await axios.post(`${BASE_URL}/entrada`, entradaData, { headers: HEADERS });
+    return response.data;
+  } catch (error) {
+    console.error("Error al registrar entrada:", error.response?.data || error);
+    throw error;
+  }
+};
+
+// Registrar salida
+export const registrarSalida = async (salidaData) => {
+  try {
+    const response = await axios.post(`${BASE_URL}/salida`, salidaData, { headers: HEADERS });
+    return response.data;
+  } catch (error) {
+    console.error("Error al registrar salida:", error.response?.data || error);
+    throw error;
+  }
+};
+
+// Obtener historial de producto
+export const obtenerHistorialProducto = async (productoId) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/${productoId}`, { headers: HEADERS });
+    return response.data;
+  } catch (error) {
+    console.error("Error al obtener historial:", error.response?.data || error);
+    throw error;
+  }
+};
+
+// Generar informe de movimientos
+export const generarInformeMovimientos = async (fechaInicio, fechaFin) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/informeMovimientos`, {
+      headers: HEADERS,
+      params: { fechaInicio, fechaFin },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error al generar informe:", error.response?.data || error);
+    throw error;
+  }
+};
