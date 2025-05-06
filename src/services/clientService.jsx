@@ -1,61 +1,68 @@
 import axios from "axios";
 
-// Ruta base correcta según el server.js
-const BASE_URL = "http://localhost:3000/AlmacenadoraG1/vlm/client";  // Cambié la URL para clientes
+const apiClient = axios.create({
+  baseURL: "http://127.0.0.1:3000/AlmacenadoraG1/vlm/",
+  timeout: 5000,
+});
 
-// Si no estás usando token aún, simplemente no lo incluyas
-const HEADERS = {}; // Vacío por ahora, sin autenticación
+apiClient.interceptors.request.use(
+  (config) => {
+    const userData = localStorage.getItem("user");
+    if (userData) {
+      const token = JSON.parse(userData).token;
+      if (token) {
+        config.headers["x-token"] = token;
+      }
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
-// Obtener todos los clientes
 export const getClients = async () => {
   try {
-    const response = await axios.get(BASE_URL, { headers: HEADERS });
-    return response.data;  // Devuelve todos los clientes
+    const response = await apiClient.get("client/");
+    return response.data;  
   } catch (error) {
     console.error("Error al obtener clientes", error);
     throw error;
   }
 };
 
-// Crear cliente
 export const createClient = async (clientData) => {
   try {
-    const response = await axios.post(BASE_URL, clientData, { headers: HEADERS });
-    return response.data.client; // ✅ devolvemos solo el cliente creado
+    const response = await apiClient.post("client/", clientData);
+    return response.data.client; 
   } catch (error) {
     console.error("Error al guardar cliente:", error.response?.data || error);
     throw error;
   }
 };
 
-// Actualizar cliente
 export const updateClient = async (id, clientData) => {
   try {
-    const response = await axios.put(`${BASE_URL}/${id}`, clientData, { headers: HEADERS });
-    return response.data;  // Devuelve el cliente actualizado
+    const response = await apiClient.put(`client/${id}`, clientData);
+    return response.data;  
   } catch (error) {
     console.error("Error al actualizar cliente", error.response?.data || error);
     throw error;
   }
 };
 
-// Eliminar cliente
 export const deleteClient = async (id) => {
   try {
-    const response = await axios.delete(`${BASE_URL}/${id}`);
-    return response.data;  // Devuelve la respuesta de eliminación
+    const response = await apiClient.delete(`client/${id}`);
+    return response.data;  
   } catch (error) {
     console.error("Error al eliminar cliente:", error);
     throw error;
   }
 };
 
-// Obtener cliente por ID
 export const getClientById = async (id) => {
   try {
-    // Corrigiendo la URL para obtener el cliente por ID
-    const response = await axios.get(`${BASE_URL}/${id}`);
-    return response.data;  // Devuelve el cliente encontrado
+    const response = await apiClient.get(`client/${id}`);
+    return response.data;  
   } catch (error) {
     console.error("Error al obtener cliente por ID", error.response?.data || error);
     throw error;

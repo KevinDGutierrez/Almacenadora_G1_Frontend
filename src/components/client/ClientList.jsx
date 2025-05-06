@@ -4,16 +4,16 @@ import {
   } from "@mui/material";
   import React, { useEffect, useState } from "react";
   import { useNavigate } from "react-router-dom";
-  import { deleteClient, getClients } from "../../services/clientService.js"; // Asegúrate de tener los servicios adecuados
+  import { deleteClient, getClients } from "../../services/clientService.jsx"; 
   
   export default function ClientList() {
     const [clients, setClients] = useState([]);
     const navigate = useNavigate();
-    const [isAdmin] = useState(true); // Cambiar cuando tengas autenticación real
+    const [isAdmin] = useState(true); 
   
     useEffect(() => {
       const fetchClients = async () => {
-        const response = await getClients(); // Asegúrate de que este servicio esté funcionando
+        const response = await getClients(); 
         if (Array.isArray(response)) {
           setClients(response);
         } else {
@@ -28,7 +28,7 @@ import {
       if (!confirm) return;
   
       try {
-        await deleteClient(id); // Asegúrate de que este servicio esté configurado correctamente
+        await deleteClient(id); 
         setClients((prev) => prev.filter((c) => c._id !== id));
       } catch (error) {
         alert("Error al eliminar el cliente.");
@@ -60,7 +60,7 @@ import {
           </TableHead>
           <TableBody>
             {clients.map((c) => {
-              if (!c || !c._id) return null; // Prevención
+              if (!c || !c._id) return null; 
   
               return (
                 <TableRow key={c._id}>

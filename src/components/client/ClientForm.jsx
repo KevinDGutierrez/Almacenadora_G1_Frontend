@@ -2,13 +2,12 @@ import { TextField, Button, Paper, Typography, Box } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { createClient, getClientById, updateClient } from "../../services/clientService.js";
+import { createClient, getClientById, updateClient } from "../../services/clientService.jsx";
 
 export default function ClientForm() {
-  const { id } = useParams(); // Si hay ID es para editar
+  const { id } = useParams(); 
   const navigate = useNavigate();
 
-  // Estado del formulario
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -16,9 +15,8 @@ export default function ClientForm() {
     address: ""
   });
 
-  const [isAdmin] = useState(true); // Lo cambiarías por autenticación real más adelante
+  const [isAdmin] = useState(true); 
 
-  // Efecto para cargar datos cuando estamos editando
   useEffect(() => {
     if (id && !/^[a-fA-F0-9]{24}$/.test(id)) {
       alert("ID inválido para edición");
@@ -68,7 +66,7 @@ export default function ClientForm() {
   if (!isAdmin) return <Typography>No autorizado</Typography>;
 
   return (
-    <Paper sx={{ maxWidth: 600, p: 3, mx: "auto", mt: 4, backgroundColor: "#f1f5f5", borderRadius: "10px" }}>
+    <Paper sx={{ maxWidth: 600, p: 3, mx: "auto", mt: 4, backgroundColor: "#cad2c5", borderRadius: "10px" }}>
       <Typography variant="h5" gutterBottom sx={{ color: "#354f52", fontWeight: "bold" }}>
         {id ? "Editar Cliente" : "Nuevo Cliente"}
       </Typography>
@@ -83,7 +81,7 @@ export default function ClientForm() {
           required
           margin="normal"
           sx={{
-            backgroundColor: "#fff", 
+            backgroundColor: "#84a98c", 
             borderRadius: "5px", 
             boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)"
           }}
@@ -98,7 +96,7 @@ export default function ClientForm() {
           required
           margin="normal"
           sx={{
-            backgroundColor: "#fff", 
+            backgroundColor: "#84a98c", 
             borderRadius: "5px", 
             boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)"
           }}
@@ -111,7 +109,7 @@ export default function ClientForm() {
           fullWidth
           margin="normal"
           sx={{
-            backgroundColor: "#fff", 
+            backgroundColor: "#84a98c", 
             borderRadius: "5px", 
             boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)"
           }}
@@ -124,7 +122,7 @@ export default function ClientForm() {
           fullWidth
           margin="normal"
           sx={{
-            backgroundColor: "#fff", 
+            backgroundColor: "#84a98c", 
             borderRadius: "5px", 
             boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)"
           }}
@@ -137,8 +135,8 @@ export default function ClientForm() {
           fullWidth 
           sx={{ 
             mt: 2, 
-            backgroundColor: "#84a98c", 
-            '&:hover': { backgroundColor: "#52796f" },
+            backgroundColor: "#52796f", 
+            '&:hover': { backgroundColor: "#84a98c" },
             borderRadius: "5px"
           }}
         >
@@ -154,7 +152,7 @@ export default function ClientForm() {
             borderColor: "#354f52", 
             borderRadius: "5px", 
             border: "2px solid", 
-            '&:hover': { backgroundColor: "#f1f5f5" }
+            '&:hover': { backgroundColor: "#84a98c" }
           }}
         >
           Regresar
