@@ -1,11 +1,12 @@
 import React from 'react';
 import {
   Drawer, List, ListItem, ListItemIcon, ListItemText,
-  AppBar, Toolbar, Typography, IconButton, CssBaseline,
-  useTheme, Divider, Box
+  ListItemButton, AppBar, Toolbar, Typography, IconButton,
+  CssBaseline, useTheme, Divider, Box
 } from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import GroupsIcon from '@mui/icons-material/Groups';
+import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -22,6 +23,7 @@ export default function Sidebar({ children }) {
   const navItems = [
     { text: 'Inicio', icon: <DashboardIcon />, path: '/' },
     { text: 'Clientes', icon: <GroupsIcon />, path: '/clients' },
+    { text: 'Movimientos', icon: <SwapHorizIcon />, path: '/movements' },
   ];
 
   return (
@@ -56,7 +58,7 @@ export default function Sidebar({ children }) {
               duration: theme.transitions.duration.enteringScreen,
             }),
             overflowX: 'hidden',
-            bgcolor: '#52796f', // Cambié el color aquí a #52796f
+            bgcolor: '#52796f',
             color: '#fff',
           },
         }}
@@ -65,22 +67,22 @@ export default function Sidebar({ children }) {
         <Divider />
         <List>
           {navItems.map(({ text, icon, path }) => (
-            <ListItem
-              key={text}
-              button
-              onClick={() => navigate(path)}
-              sx={{
-                bgcolor: location.pathname === path ? '#e0e0e0' : 'inherit',
-                color: location.pathname === path ? '#000' : '#fff',
-                '&:hover': {
-                  bgcolor: '#333',
-                },
-              }}
-            >
-              <ListItemIcon sx={{ color: location.pathname === path ? '#000' : '#fff' }}>
-                {icon}
-              </ListItemIcon>
-              {open && <ListItemText primary={text} />}
+            <ListItem key={text} disablePadding>
+              <ListItemButton
+                onClick={() => navigate(path)}
+                sx={{
+                  bgcolor: location.pathname === path ? '#e0e0e0' : 'inherit',
+                  color: location.pathname === path ? '#000' : '#fff',
+                  '&:hover': {
+                    bgcolor: '#333',
+                  },
+                }}
+              >
+                <ListItemIcon sx={{ color: location.pathname === path ? '#000' : '#fff' }}>
+                  {icon}
+                </ListItemIcon>
+                {open && <ListItemText primary={text} />}
+              </ListItemButton>
             </ListItem>
           ))}
         </List>

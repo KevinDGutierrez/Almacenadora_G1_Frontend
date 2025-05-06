@@ -24,6 +24,76 @@ export default function InventarioApp() {
   const [fechaFin, setFechaFin] = useState("");
   const [informe, setInforme] = useState([]);
 
+  // Función para registrar entrada
+  const handleEntrada = () => {
+    const nuevaEntrada = {
+      ...entradaData,
+      tipo: "Entrada",
+      fecha: new Date().toISOString(),
+    };
+    setHistorial([...historial, nuevaEntrada]);
+    setEntradaData({
+      producto: "",
+      cantidad: "",
+      empleado: "",
+      motivo: "",
+      destino: "",
+    });
+  };
+
+  // Función para registrar salida
+  const handleSalida = () => {
+    const nuevaSalida = {
+      ...salidaData,
+      tipo: "Salida",
+      fecha: new Date().toISOString(),
+    };
+    setHistorial([...historial, nuevaSalida]);
+    setSalidaData({
+      producto: "",
+      cantidad: "",
+      empleado: "",
+      motivo: "",
+      destino: "",
+    });
+  };
+
+  // Función para obtener historial por producto
+  const obtenerHistorial = () => {
+    const historialFiltrado = historial.filter(
+      (item) => item.producto === productoHistorial
+    );
+    setHistorial(historialFiltrado);
+  };
+
+  // Función para generar informe de movimientos
+  const generarInforme = () => {
+    const inicio = new Date(fechaInicio);
+    const fin = new Date(fechaFin);
+    const resumen = {};
+
+    historial.forEach((item) => {
+      const fechaItem = new Date(item.fecha);
+      if (fechaItem >= inicio && fechaItem <= fin) {
+        if (!resumen[item.producto]) {
+          resumen[item.producto] = { totalEntradas: 0, totalSalidas: 0 };
+        }
+        if (item.tipo === "Entrada") {
+          resumen[item.producto].totalEntradas += parseInt(item.cantidad);
+        } else if (item.tipo === "Salida") {
+          resumen[item.producto].totalSalidas += parseInt(item.cantidad);
+        }
+      }
+    });
+
+    const informeArray = Object.keys(resumen).map((producto) => ({
+      nombreProducto: producto,
+      ...resumen[producto],
+    }));
+
+    setInforme(informeArray);
+  };
+
   return (
     <div className="p-4 max-w-4xl mx-auto">
       <h1 className="text-2xl font-bold mb-4">Sistema de Inventario</h1>
