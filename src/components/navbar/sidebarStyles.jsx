@@ -2,7 +2,7 @@ export const drawerWidth = 240;
 
 export const appBarSx = {
   zIndex: (theme) => theme.zIndex.drawer + 1,
-  bgcolor: "#1e1e1e",
+  bgcolor: "#3b4353",
 };
 
 export const drawerSx = (open) => ({
@@ -10,8 +10,8 @@ export const drawerSx = (open) => ({
   flexShrink: 0,
   "& .MuiDrawer-paper": {
     width: open ? drawerWidth : 64,
-    bgcolor: "#1a1a1a",
-    color: "#fff",
+    bgcolor: "#272125",
+    color: "#c7c7c3",
     transition: "width 0.3s",
     overflowX: "hidden",
   },

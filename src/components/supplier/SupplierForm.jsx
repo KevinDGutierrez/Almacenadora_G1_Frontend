@@ -78,7 +78,7 @@ export default function SupplierForm() {
   if (!isAdmin) return <Typography>No autorizado</Typography>;
 
   return (
-    <Paper sx={{ maxWidth: 600, p: 3, mx: "auto", mt: 4 }}>
+    <Paper sx={{ maxWidth: 600, p: 3, mx: "auto", mt: 4, bgcolor: "#272125", color: "#c7c7c3" }}>
       <Typography variant="h5" gutterBottom>
         {id ? "Editar Proveedor" : "Nuevo Proveedor"}
       </Typography>
@@ -92,6 +92,8 @@ export default function SupplierForm() {
           fullWidth
           required
           margin="normal"
+          InputLabelProps={{ style: { color: '#c7c7c3' } }}
+          InputProps={{ style: { color: '#ffffff' } }}
         />
         <TextField
           label="Correo electrónico"
@@ -102,6 +104,8 @@ export default function SupplierForm() {
           fullWidth
           required
           margin="normal"
+          InputLabelProps={{ style: { color: '#c7c7c3' } }}
+          InputProps={{ style: { color: '#ffffff' } }}
         />
         <TextField
           label="Teléfono"
@@ -110,6 +114,8 @@ export default function SupplierForm() {
           onChange={handleChange}
           fullWidth
           margin="normal"
+          InputLabelProps={{ style: { color: '#c7c7c3' } }}
+          InputProps={{ style: { color: '#ffffff' } }}
         />
         <TextField
           label="Dirección"
@@ -118,6 +124,8 @@ export default function SupplierForm() {
           onChange={handleChange}
           fullWidth
           margin="normal"
+          InputLabelProps={{ style: { color: '#c7c7c3' } }}
+          InputProps={{ style: { color: '#ffffff' } }}
         />
         <TextField
           label="Productos suministrados (separados por coma)"
@@ -126,13 +134,15 @@ export default function SupplierForm() {
           onChange={handleChange}
           fullWidth
           margin="normal"
+          InputLabelProps={{ style: { color: '#c7c7c3' } }}
+          InputProps={{ style: { color: '#ffffff' } }}
         />
 
-        <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
+        <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2, bgcolor: '#3b4353' }}>
           {id ? "Actualizar" : "Crear"}
         </Button>
 
-        <Button onClick={() => navigate("/suppliers")} startIcon={<ArrowBackIcon />} sx={{ mt: 2 }} >
+        <Button onClick={() => navigate("/suppliers")} startIcon={<ArrowBackIcon />} sx={{ mt: 2, color: '#c7c7c3' }}>
           Regresar
         </Button>
       </Box>

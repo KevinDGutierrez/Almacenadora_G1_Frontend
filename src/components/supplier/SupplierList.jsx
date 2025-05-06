@@ -37,13 +37,13 @@ export default function SupplierList() {
   };
 
   return (
-    <Paper sx={{ mt: 4, mx: "auto", maxWidth: 900, p: 3 }}>
+    <Paper sx={{ mt: 4, mx: "auto", maxWidth: 900, p: 3, bgcolor: "#272125", color: "#c7c7c3" }}>
       <Typography variant="h4" gutterBottom>
         Lista de Proveedores
       </Typography>
 
       {isAdmin && (
-        <Button variant="contained" onClick={() => navigate("/suppliers/new")} sx={{ mb: 2 }}>
+        <Button variant="contained" onClick={() => navigate("/suppliers/new")} sx={{ mb: 2, bgcolor: '#3b4353' }}>
           Agregar proveedor
         </Button>
       )}
@@ -51,12 +51,12 @@ export default function SupplierList() {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Nombre</TableCell>
-            <TableCell>Email</TableCell>
-            <TableCell>Teléfono</TableCell>
-            <TableCell>Dirección</TableCell>
-            <TableCell>Productos</TableCell>
-            {isAdmin && <TableCell>Acciones</TableCell>}
+          <TableCell sx={{ color: '#c7c7c3' }}>Nombre</TableCell>
+            <TableCell sx={{ color: '#c7c7c3' }}>Email</TableCell>
+            <TableCell sx={{ color: '#c7c7c3' }}>Teléfono</TableCell>
+            <TableCell sx={{ color: '#c7c7c3' }}>Dirección</TableCell>
+            <TableCell sx={{ color: '#c7c7c3' }}>Productos</TableCell>
+            {isAdmin && <TableCell sx={{ color: '#c7c7c3' }}>Acciones</TableCell>}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -66,15 +66,19 @@ export default function SupplierList() {
             console.log("ID que se está enviando a editar:", s._id);
 
             return (
-              <TableRow key={s._id}>
-                <TableCell>{s.name || "-"}</TableCell>
-                <TableCell>{s.email || "-"}</TableCell>
-                <TableCell>{s.phone || "-"}</TableCell>
-                <TableCell>{s.address || "-"}</TableCell>
-                <TableCell>{Array.isArray(s.productsSupplied) ? s.productsSupplied.join(", ") : "-"}</TableCell>
+              <TableRow key={s._id} sx={{ '&:hover': { backgroundColor: '#3b4353' } }}>
+                <TableCell sx={{ color: '#ffffff' }}>{s.name || "-"}</TableCell>
+                <TableCell sx={{ color: '#ffffff' }}>{s.email || "-"}</TableCell>
+                <TableCell sx={{ color: '#ffffff' }}>{s.phone || "-"}</TableCell>
+                <TableCell sx={{ color: '#ffffff' }}>{s.address || "-"}</TableCell>
+                <TableCell sx={{ color: '#ffffff' }}>
+                  {Array.isArray(s.productsSupplied) ? s.productsSupplied.join(", ") : "-"}
+                </TableCell>
                 {isAdmin && s._id?.length === 24 && (
                   <TableCell>
-                    <Button onClick={() => navigate(`/suppliers/edit/${s._id}`)}>Editar</Button>
+                    <Button onClick={() => navigate(`/suppliers/edit/${s._id}`)} sx={{ color: '#c7c7c3' }}>
+                      Editar
+                    </Button>
                     <Button color="error" onClick={() => handleDelete(s._id)}>Eliminar</Button>
                   </TableCell>
                 )}

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const apiClient = axios.create({
-  baseURL: "http://localhost:3000/AlmacenadoraG1/vlm/suppliers",
+  baseURL: "http://127.0.0.1:3000/AlmacenadoraG1/vlm/",
   timeout: 5000,
 });
 
@@ -21,7 +21,7 @@ apiClient.interceptors.request.use(
 
 export const getSuppliers = async () => {
   try {
-    const { data } = await apiClient.get("/");
+    const { data } = await apiClient.get("suppliers/");
     return data;
   } catch (error) {
     console.error("Error al obtener proveedores", error);
@@ -31,7 +31,7 @@ export const getSuppliers = async () => {
 
 export const getSupplierById = async (id) => {
   try {
-    const { data } = await apiClient.get(`/${id}`);
+    const { data } = await apiClient.get(`suppliers/${id}`);
     return data;
   } catch (error) {
     console.error("Error al obtener proveedor por ID", error);
@@ -41,7 +41,7 @@ export const getSupplierById = async (id) => {
 
 export const createSupplier = async (supplierData) => {
   try {
-    const { data } = await apiClient.post("/", supplierData);
+    const { data } = await apiClient.post("suppliers/", supplierData);
     return data;
   } catch (error) {
     console.error("Error al crear proveedor", error);
@@ -51,7 +51,7 @@ export const createSupplier = async (supplierData) => {
 
 export const updateSupplier = async (id, supplierData) => {
   try {
-    const { data } = await apiClient.put(`/${id}`, supplierData);
+    const { data } = await apiClient.put(`suppliers/${id}`, supplierData);
     return data;
   } catch (error) {
     console.error("Error al actualizar proveedor", error);
@@ -61,7 +61,7 @@ export const updateSupplier = async (id, supplierData) => {
 
 export const deleteSupplier = async (id) => {
   try {
-    const { data } = await apiClient.delete(`/${id}`);
+    const { data } = await apiClient.delete(`suppliers/${id}`);
     return data;
   } catch (error) {
     console.error("Error al eliminar proveedor", error);
