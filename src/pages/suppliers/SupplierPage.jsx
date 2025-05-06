@@ -1,7 +1,7 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import SupplierList from './SupplierList';
-import SupplierForm from './SupplierForm';
+import SupplierList from '../../components/supplier/SupplierList';
+import SupplierForm from '../../components/supplier/SupplierForm';
 
 export default function SupplierPage() {
   return (

@@ -1,4 +1,3 @@
-// src/pages/suppliers/SupplierList.jsx
 import {
   Table, TableHead, TableRow, TableCell, TableBody,
   Button, Paper, Typography
@@ -10,7 +9,7 @@ import { deleteSupplier, getSuppliers } from "../../services/supplierService";
 export default function SupplierList() {
   const [suppliers, setSuppliers] = useState([]);
   const navigate = useNavigate();
-  const [isAdmin] = useState(true); // cambiar cuando tengas auth real
+  const [isAdmin] = useState(true); 
 
   useEffect(() => {
     const fetchSuppliers = async () => {
@@ -62,7 +61,7 @@ export default function SupplierList() {
         </TableHead>
         <TableBody>
           {suppliers.map((s) => {
-            if (!s || !s._id) return null; // Prevención
+            if (!s || !s._id) return null; 
 
             console.log("ID que se está enviando a editar:", s._id);
 

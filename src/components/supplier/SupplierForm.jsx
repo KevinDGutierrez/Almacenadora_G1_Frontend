@@ -1,4 +1,3 @@
-// src/pages/suppliers/SupplierForm.jsx
 import { TextField, Button, Paper, Typography, Box } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
@@ -6,16 +5,16 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { createSupplier, getSupplierById, updateSupplier } from "../../services/supplierService";
 
 export default function SupplierForm() {
-  const { id } = useParams(); // si hay ID es edición
+  const { id } = useParams(); 
   const navigate = useNavigate();
   const [form, setForm] = useState({
     name: "",
     email: "",
     phone: "",
     address: "",
-    productsSupplied: "" // ahora como string separado por comas
+    productsSupplied: "" 
   });
-  const [isAdmin] = useState(true); // después cambiar por autenticación real
+  const [isAdmin] = useState(true); 
 
   useEffect(() => {
     if (id && !/^[a-fA-F0-9]{24}$/.test(id)) {
@@ -24,29 +23,30 @@ export default function SupplierForm() {
       return;
     }
     
-  
     const loadSupplier = async () => {
       try {
-        const supplierData = await getSupplierById(id);
+        const { supplier } = await getSupplierById(id);
+        if (!supplier) {
+          alert("Proveedor no encontrado.");
+          navigate("/suppliers");
+          return;
+        } 
         setForm({
-          name: supplierData.name || "",
-          email: supplierData.email || "",
-          phone: supplierData.phone || "",
-          address: supplierData.address || "",
-          productsSupplied: (supplierData.productsSupplied || []).join(", ")
-        });
-      } catch (error) {
-        console.error("Error al cargar proveedor", error);
-        alert("No se pudo cargar el proveedor.");
-        navigate("/suppliers");
-      }
+            name: supplier.name || "",
+            email: supplier.email || "",
+            phone: supplier.phone || "",
+            address: supplier.address || "",
+            productsSupplied: (supplier.productsSupplied || []).join(", ")
+          });
+        } catch (error) {
+          console.error("Error al cargar proveedor", error);
+          alert("No se pudo cargar el proveedor.");
+          navigate("/suppliers");
+        }
     };
-  
     if (id) loadSupplier();
   }, [id]);
   
-  
-
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -132,11 +132,7 @@ export default function SupplierForm() {
           {id ? "Actualizar" : "Crear"}
         </Button>
 
-        <Button
-          onClick={() => navigate("/suppliers")}
-          startIcon={<ArrowBackIcon />}
-          sx={{ mt: 2 }}
-        >
+        <Button onClick={() => navigate("/suppliers")} startIcon={<ArrowBackIcon />} sx={{ mt: 2 }} >
           Regresar
         </Button>
       </Box>
