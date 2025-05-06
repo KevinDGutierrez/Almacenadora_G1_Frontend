@@ -11,6 +11,8 @@ export const DashboardPage = () => {
   const { isLogged } = useUserDetails();
 
   useEffect(() => {
+    // Puedes colocar lógica relacionada con el estado de autenticación aquí
+    console.log("isLogged:", isLogged);
   }, [isLogged]);
 
   return (
@@ -20,10 +22,26 @@ export const DashboardPage = () => {
           <source src={videoApp} type="video/mp4" />
         </video>
       </div>
+
       <div className="navbar-container">
-        <Navbar />
+        {(() => {
+          try {
+            return <Navbar />;
+          } catch (e) {
+            console.error("Error en Navbar:", e);
+            return <div>Error al cargar Navbar</div>;
+          }
+        })()}
       </div>
-      <Content />
+
+      {(() => {
+        try {
+          return <Content />;
+        } catch (e) {
+          console.error("Error en Content:", e);
+          return <div>Error al cargar el contenido</div>;
+        }
+      })()}
     </div>
   );
 };

@@ -1,10 +1,9 @@
-import { PasswordSettings } from "./PasswordSettings";
+import { UserSettings } from "./UserSettings";
 
 export const Settings = () => {
     return (
         <div className="settings-container">
-            <span>Settings</span>
-            <PasswordSettings />
+            <UserSettings />
         </div>
     )
 }
