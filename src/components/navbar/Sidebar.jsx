@@ -9,8 +9,8 @@ import {
   ChevronLeft as ChevronLeftIcon,
   Home as HomeIcon,
   People as PeopleIcon,
-  Inventory as InventoryIcon,
-  Groups as GroupsIcon
+  Groups as GroupsIcon,
+  AlignVerticalBottom as AlignVerticalBottomIcon
 } from "@mui/icons-material";
 import { useNavigate, useLocation, Outlet } from "react-router-dom";
 import {
@@ -20,8 +20,8 @@ import {
 const navItems = [
   { text: "Inicio", icon: <HomeIcon />, path: "/" },
   { text: "Proveedores", icon: <PeopleIcon />, path: "/suppliers" },
-  { text: "Movimientos", icon: <InventoryIcon />, path: "/movements" },
   { text: "Clientes", icon: <GroupsIcon />, path: "/clients" },
+  { text: "Estadisticas", icon: <AlignVerticalBottomIcon />, path: "/estadistic" },
 ];
 
 export default function Sidebar() {
