@@ -9,6 +9,9 @@ import {
   ChevronLeft as ChevronLeftIcon,
   Home as HomeIcon,
   People as PeopleIcon,
+  Inventory as InventoryIcon,
+  Groups as GroupsIcon,
+  Category as CategoryIcon,
   Groups as GroupsIcon,
   AlignVerticalBottom as AlignVerticalBottomIcon
 } from "@mui/icons-material";
@@ -22,10 +25,12 @@ import {
 const navItems = [
   { text: "Inicio", icon: <HomeIcon />, path: "/" },
   { text: "Proveedores", icon: <PeopleIcon />, path: "/suppliers" },
+  { text: "Movimientos", icon: <InventoryIcon />, path: "/movements" },
   { text: "Clientes", icon: <GroupsIcon />, path: "/clients" },
-  { text: "Estadisticas", icon: <AlignVerticalBottomIcon />, path: "/estadistic" },
-  { text: "Movimientos", icon: <SwapHorizIcon />, path: "/movements" },
-  { text: "inventarios", icon: <ListIcon />, path: "/inventary" },
+  { text: "Productos", icon: <CategoryIcon />, path: "/products" },
+  { text: "Categorias", icon: <CategoryIcon />, path: "/categories" },
+  
+
 ];
 
 export default function Sidebar() {
