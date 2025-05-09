@@ -2,7 +2,7 @@ import axios from "axios";
 
 
 const apiClient = axios.create({
-  baseURL: "http://127.0.0.1:8080/AlmacenadoraG1/vlm",
+  baseURL: "http://127.0.0.1:3000/AlmacenadoraG1/vlm/add-categories",
   timeout: 5000,  
 });
 
@@ -19,25 +19,32 @@ apiClient.interceptors.request.use(
       return config;
     },
     (error) => Promise.reject(error)
-  );
+);
 
- export const getCategories = async () => {
+export const getAllCategories = async () => {
   try {
-  
-    const response = await apiClient.get("/categories"); 
-    return response.data.categories;
+    const response = await apiClient.get(`/allCategory`);
+    return response.data;
   } catch (error) {
-    console.error("Error al obtener categorías:", error.response?.data || error);
+    console.error("Error al obtener todas las categorías:", error.response?.data || error);
     throw error;
   }
 };
 
+export const getCategoryById = async (id) => {
+  try {
+    const response = await apiClient.get(`/findUser/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error al obtener categoría por ID (${id}):`, error.response?.data || error);
+    throw error;
+  }
+};
 
 export const createCategory = async (categoryData) => {
   try {
- 
-    const response = await apiClient.post("/add-categories", categoryData); 
-    return response.data.categorie; 
+    const response = await apiClient.post("/createCategory", categoryData); 
+    return response.data;  
   } catch (error) {
     console.error("Error al guardar categoría:", error.response?.data || error);
     throw error;

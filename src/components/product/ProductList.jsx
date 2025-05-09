@@ -23,7 +23,7 @@ export default function ProductList() {
           setProducts(response);
           setFilteredProducts(response);
         } else {
-          throw new Error("Error cargando productos");
+            throw new Error("Error cargando productos");
         }
       } catch (error) {
         setError("No se pudieron cargar los productos."); 

@@ -11,7 +11,6 @@ export default function App() {
         <Route index element={<div>Bienvenido a Almacenadora G1</div>} />
         <Route path="products/*" element={<ProductPage />} />
         <Route path="categories/*" element={<CategoriePage />} />
-
       </Route>
     </Routes>
   );

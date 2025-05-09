@@ -3,7 +3,7 @@ import {
   Button, Paper, Typography, TextField, Box
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { getCategories, createCategory } from "../../services/CategoriaService.jsx";
+import { getAllCategories, createCategory } from "../../services/CategoriaService.jsx";
 
 export default function CategoryList() {
   const [categories, setCategories] = useState([]);
@@ -15,10 +15,11 @@ export default function CategoryList() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await getCategories();
+        const response = await getAllCategories();
         if (response.success) {
           setCategories(response.categories);
           setFilteredCategories(response.categories);
+          setNewCategory({ name: "", description: "" });
         } else {
           throw new Error("Error cargando categorías");
         }

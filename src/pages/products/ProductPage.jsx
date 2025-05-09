@@ -10,7 +10,7 @@ export default function ProductPage() {
     <Routes>
       <Route index element={<ProductList />} />  
       <Route path="new" element={<ProductForm />} />  
-       <Route path="/products*" element={<ProductPage />} />
+      <Route path="edit/:id" element={<ProductForm />} />
     </Routes>
   );
 }

@@ -2,7 +2,7 @@ import axios from "axios";
 
 
 const apiClient = axios.create({
-  baseURL: "http://127.0.0.1:8080/AlmacenadoraG1/vlm",
+  baseURL: "http://127.0.0.1:3000/AlmacenadoraG1/vlm",
   timeout: 5000,  
 });
 
@@ -25,14 +25,13 @@ apiClient.interceptors.request.use(
 export const getProducts = async () => {
   try {
     const response = await apiClient.get("/products"); 
-    return response.data; 
+    return response.data.products;  
   } catch (error) {
     return res.error("Error al obtener productos:", error.response?.data || error);
     throw error;
   }
 };
 //probaste crearla por backend?
-
 
 export const createProduct = async (productData) => {
   try {
@@ -63,7 +62,6 @@ export const getProductById = async (id) => {
   }
 };
 
-
 export const updateProduct = async (id, productData) => {
   try {
     const response = await apiClient.put(`/products/${id}`, productData); 
@@ -74,7 +72,6 @@ export const updateProduct = async (id, productData) => {
   }
 };
 
-
 export const deleteProduct = async (id) => {
   try {
     const response = await apiClient.delete(`/products/${id}`);  
@@ -84,7 +81,6 @@ export const deleteProduct = async (id) => {
     throw error;
   }
 };
-
 
 export const getLowStockProducts = async () => {
   try {

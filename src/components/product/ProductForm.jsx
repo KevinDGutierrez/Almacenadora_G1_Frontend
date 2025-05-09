@@ -3,29 +3,37 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { createProduct, getProductById, updateProduct } from "../../services/Product-service.jsx"; 
-export default function ProductForm() {
-  const { id } = useParams();
-  const navigate = useNavigate();
+import { getAllCategories } from "../../services/CategoriaService";
 
+export default function ProductForm() {
+  const { id } = useParams();          // ← aquí toma el id desde la URL
+  const navigate = useNavigate();  
+
+  const [categories, setCategories] = useState([]);   // ← aquí va
   const [product, setProduct] = useState({
     name: "",
     category: "",
     stock: "",
     supplier: "",
+    description: "",
     entryDate: "",
     fechaDeVencimiento: "",
-    precioUnitario: "",
-    description:''
+    precioUnitario: ""
   });
 
-  const [isAdmin] = useState(true);
-
   useEffect(() => {
-    if (id && !/^[a-fA-F0-9]{24}$/.test(id)) {
-      alert("ID inválido para edición");
-      navigate("/products");
-      return;
-    }
+    const fetchCategories = async () => {
+      try {
+        const response = await getAllCategories();
+        if (response.success) {
+          setCategories(response.categories);
+        } else {
+          console.error("Error al cargar categorías:", response);
+        }
+      } catch (error) {
+        console.error("Error al cargar categorías:", error);
+      }
+    };
 
     const loadProduct = async () => {
       try {
@@ -35,7 +43,10 @@ export default function ProductForm() {
           category: data.category || "",
           stock: data.stock || "",
           supplier: data.supplier || "",
+          description: data.description || "",
           entryDate: data.entryDate ? data.entryDate.split("T")[0] : "",
+          fechaDeVencimiento: data.fechaDeVencimiento ? data.fechaDeVencimiento.split("T")[0] : "",
+          precioUnitario: data.precioUnitario || "",
         });
       } catch (error) {
         console.error("Error al cargar producto", error);
@@ -44,8 +55,17 @@ export default function ProductForm() {
       }
     };
 
+    if (id && !/^[a-fA-F0-9]{24}$/.test(id)) {
+      alert("ID inválido para edición");
+      navigate("/products");
+      return;
+    }
+
+    fetchCategories();
+
     if (id) loadProduct();
   }, [id]);
+
 
   const handleChange = (e) => {
     setProduct({ ...product, [e.target.name]: e.target.value });
@@ -66,9 +86,6 @@ export default function ProductForm() {
     
   };
   }
-
-  if (!isAdmin) return <Typography>No autorizado</Typography>;
-
   const textFieldStyle = {
   backgroundColor: "white ",
   borderRadius: "5px",
@@ -98,21 +115,21 @@ return (
 
       <FormControl fullWidth required margin="normal" sx={textFieldStyle}>
         <InputLabel id="category-label" sx={{ color: "#000" }}>Categoría</InputLabel>
-        <Select
-          labelId="category-label"
-          name="category"
-          value={product.category}
-          onChange={handleChange}
-          label="Categoría"
-          sx={{ color: "#000" }}
-        >
-          <MenuItem value=""><em>Seleccionar</em></MenuItem>
-          <MenuItem value="Electrónica">Electrónica</MenuItem>
-          <MenuItem value="Ropa">Ropa</MenuItem>
-          <MenuItem value="Alimentos">Alimentos</MenuItem>
-          <MenuItem value="Juguetes">Juguetes</MenuItem>
-          <MenuItem value="Otros">Otros</MenuItem>
-        </Select>
+      <Select
+        labelId="category-label"
+        name="category"
+        value={product.category}
+        onChange={handleChange}
+        label="Categoría"
+        sx={{ color: "#000" }}
+      >
+      <MenuItem value=""><em>Seleccionar</em></MenuItem>
+      {categories.map((cat) => (
+        <MenuItem key={cat._id} value={cat._id}>
+          {cat.name}
+        </MenuItem>
+      ))}
+      </Select>
       </FormControl>
 
       <TextField
