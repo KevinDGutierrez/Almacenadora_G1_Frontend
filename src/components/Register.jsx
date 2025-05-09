@@ -70,8 +70,6 @@ export const Register = ({ switchAuthHandler }) => {
         let isValid = false;
         switch (field) {
             case 'name':
-                isValid = true;
-                break;
             case 'surname':
                 isValid = true;
                 break;
@@ -105,14 +103,18 @@ export const Register = ({ switchAuthHandler }) => {
 
     const handleRegister = (event) => {
         event.preventDefault();
-        register(
-            formState.name.value,
-            formState.surname.value,
-            formState.username.value,
-            formState.email.value,
-            formState.password.value,
-            formState.phone.value
-        );
+
+        const data = {
+            name: formState.name.value,
+            surname: formState.surname.value,
+            username: formState.username.value,
+            email: formState.email.value,
+            password: formState.password.value,
+            phone: formState.phone.value
+        };
+
+        console.log("Datos enviados:", data);
+        register(data);
     };
 
     const isSubmitButtonDisable = isLoading ||

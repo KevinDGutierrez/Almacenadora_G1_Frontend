@@ -10,32 +10,36 @@ export const useLogin = () => {
   const login = async (email, password) => {
     setLoading(true);
 
-    const response = await loginRequest({ email, password });
+    try {
+      const response = await loginRequest({ email, password });
+      setLoading(false);
 
-    setLoading(false);
+      if (response.error || response.status >= 400) {
+        const msg = response.e?.response?.data?.msg || 'Ocurrió un error al iniciar sesión';
+        return toast.error(msg);
+      }
 
-    if (response.error) {
-      return toast.error(
-        response.e?.response?.data || 'Ocurrió un error al iniciar sesión'
-      );
+      const userDetails = response.data?.userDetails || response.data;
+      const { token, status, ...restUser } = userDetails || {};
+
+      if (status === false) {
+        return toast.error('El usuario está desactivado. Contacta al administrador.');
+      }
+
+      if (!token) {
+        return toast.error('No se recibió el token');
+      }
+
+      localStorage.removeItem('user');
+      localStorage.setItem('user', JSON.stringify({ token, status, ...restUser }));
+
+      toast.success('Sesión iniciada exitosamente');
+      navigate('/');
+    } catch (err) {
+      setLoading(false);
+      toast.error('Error inesperado al iniciar sesión');
+      console.error('Login error:', err);
     }
-
-    // 👇 Mostrar la estructura de la respuesta para depurar
-    console.log('Login response:', response.data);
-
-    // 👇 Verifica si el token se encuentra en la respuesta
-    const userDetails = response.data?.userDetails || response.data;
-    const { token, ...restUser } = userDetails || {};
-
-    if (!token) {
-      return toast.error('No se recibió el token');
-    }
-
-    // 👇 Guardar token y datos del usuario
-    localStorage.setItem('user', JSON.stringify({ token, ...restUser }));
-
-    toast.success('Sesión iniciada exitosamente');
-    navigate('/');
   };
 
   return {

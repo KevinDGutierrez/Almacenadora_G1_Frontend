@@ -10,19 +10,36 @@ export const useRegister = () => {
   const register = async (name, surname, username, email, password, phone) => {
     setIsLoading(true);
 
-    const response = await registerRequest({ name, surname, username, email, password, phone });
+    try {
+      const response = await registerRequest({
+        name,
+        surname,
+        username,
+        email,
+        password,
+        phone,
+        role: 'EMPLOYEE',
+      });
 
-    setIsLoading(false);
+      const { userDetails } = response.data;
 
-    if (response.error) {
-      return toast.error(response.error?.response?.data || 'Ocurrió un error al registrarse, intenta de nuevo');
+      if (!userDetails) {
+        toast.error('La respuesta del servidor no contiene los datos esperados.');
+        return;
+      }
+
+      localStorage.setItem('user', JSON.stringify(userDetails));
+      toast.success('Usuario registrado');
+      navigate('/');
+    } catch (error) {
+      const msg =
+        error.response?.data?.msg ||
+        error.response?.data?.message ||
+        'Ocurrió un error al registrarse, intenta de nuevo';
+      toast.error(msg);
+    } finally {
+      setIsLoading(false);
     }
-
-    const { userDetails } = response.data;
-    localStorage.setItem('user', JSON.stringify(userDetails));
-
-    toast.success('Usuario registrado');
-    navigate('/');
   };
 
   return {

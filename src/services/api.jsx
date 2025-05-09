@@ -1,41 +1,28 @@
 import axios from "axios";
 
 const apiClient = axios.create({
-  baseURL: "http://127.0.0.1:8080/AlmacenadoraG1/vlm",
+  baseURL: "http://127.0.0.1:8080/AlmacenadoraG1/vlm/",
   timeout: 5000,
 });
 
-// Interceptor para agregar token automáticamente
 apiClient.interceptors.request.use(
   (config) => {
-    const userDetails = localStorage.getItem("user");
-
-    if (userDetails) {
-      try {
-        const parsed = JSON.parse(userDetails);
-        const token = parsed?.token;
-        if (token) {
-          console.log("Token en interceptor:", token);  // Verifica si el token está presente
-          config.headers.Authorization = `Bearer ${token}`;
-        }
-      } catch (e) {
-        console.error("Error parsing user token from localStorage", e);
+    const userData = localStorage.getItem("user");
+    if (userData) {
+      const token = JSON.parse(userData).token;
+      if (token) {
+        config.headers["x-token"] = token;
       }
     }
-
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
-
-// Funciones exportadas
 
 export const login = async (data) => {
   try {
     const response = await apiClient.post("/users/login", data);
-    console.log("Login response:", response);  // Verificar la respuesta del login
+    console.log("Login response:", response);
     return response;
   } catch (e) {
     return {
@@ -47,32 +34,49 @@ export const login = async (data) => {
 
 export const register = async (data) => {
   try {
-    return await apiClient.post("/users/register", data);
+    const response = await apiClient.post("/users/register", data);
+    return { data: response.data };
   } catch (e) {
+    console.log("Error en el registro:", e.response);
+    if (e.response && e.response.data && e.response.data.errors) {
+      const errors = e.response.data.errors;
+      errors.forEach((error) => {
+        console.log(`Error: ${JSON.stringify(error)}`);
+      });
+    }
+
     return {
       error: true,
-      e,
+      response: e.response,
     };
   }
 };
 
 export const changeUser = async (data) => {
   try {
-    return await apiClient.put("/users/update", data);
+    const response = await apiClient.put("/users/update", data); 
+    return response.data;
   } catch (e) {
-    return {
-      error: true,
-      e,
-    };
+    return { error: true, e };
   }
 };
 
 export const getUser = async () => {
   try {
     const response = await apiClient.get("/users/search");
-    console.log("Get user response:", response);  // Verificar la respuesta al obtener usuario
+    return response.data;
+  } catch (e) {
+    console.error("Error al obtener el usuario:", e);
+    return { error: true, e };
+  }
+};
+
+export const deleteUserRequest = async (data) => {
+  try {
+    const response = await apiClient.put("/users/delete", data );
     return response;
   } catch (e) {
+    console.error("Error al eliminar usuario:", e);
     return {
       error: true,
       e,

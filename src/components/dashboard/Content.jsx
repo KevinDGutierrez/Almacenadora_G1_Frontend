@@ -6,7 +6,7 @@ export const Content = ({}) => {
     return (
         <div className="content-container">
             <Routes>
-                <Route path='settings' element={<Settings/>}/>
+                <Route path='settings/*' element={<Settings/>}/>
             </Routes>
         </div>
     )

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   validatePassword,
   validateActualPassword,
@@ -6,6 +7,7 @@ import {
   validateActualPasswordMessage
 } from "../../shared/validators";
 import { useChangeUser } from "../../shared/hooks";
+import { useUser } from "../../shared/hooks/useUser";
 import { Input } from "../Input";
 import toast from "react-hot-toast";
 
@@ -30,6 +32,7 @@ const inputs = [
 ];
 
 export const UserSettings = () => {
+  const { user, loading } = useUser();
   const [formState, setFormState] = useState({
     name: { value: "" },
     surname: { value: "" },
@@ -40,32 +43,21 @@ export const UserSettings = () => {
     newPassword: { value: "", isValid: false, showError: false }
   });
 
-  const { changeUser, getUser } = useChangeUser();
+  const { changeUser } = useChangeUser();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await getUser();
-        if (response && !response.error) {
-          const user = response.data;
-          setFormState((prev) => ({
-            ...prev,
-            name: { value: user.name || "" },
-            surname: { value: user.surname || "" },
-            username: { value: user.username || "" },
-            email: { value: user.email || "" },
-            phone: { value: user.phone || "" }
-          }));
-        } else {
-          console.error("Error al obtener usuario:", response?.message || response);
-        }
-      } catch (err) {
-        console.error("Error al obtener datos del usuario:", err);
-      }
-    };
-
-    fetchUser();
-  }, []);
+    if (!loading && user) {
+      setFormState((prev) => ({
+        ...prev,
+        name: { value: user.name || "" },
+        surname: { value: user.surname || "" },
+        username: { value: user.username || "" },
+        email: { value: user.email || "" },
+        phone: { value: user.phone || "" }
+      }));
+    }
+  }, [loading, user]);
 
   const handleInputValueChange = (value, field) => {
     setFormState((prevState) => ({
@@ -77,12 +69,30 @@ export const UserSettings = () => {
     }));
   };
 
-  const handleInputValidationOnBlur = (value, field) => {
+  const handleInputValidationOnBlur = async (value, field) => {
     const trimmedValue = value.trim();
-    const isValid =
-      field === "password"
-        ? validateActualPassword(trimmedValue)
-        : validatePassword(trimmedValue);
+
+    if (!trimmedValue) {
+      setFormState((prevState) => ({
+        ...prevState,
+        [field]: {
+          ...prevState[field],
+          isValid: false,
+          showError: true
+        }
+      }));
+      return;
+    }
+
+    let isValidResult;
+
+    if (field === "password") {
+      isValidResult = await validateActualPassword(trimmedValue);
+    } else {
+      isValidResult = validatePassword(trimmedValue);
+    }
+
+    const isValid = typeof isValidResult === "object" ? isValidResult.valid : isValidResult;
 
     setFormState((prevState) => ({
       ...prevState,
@@ -110,19 +120,53 @@ export const UserSettings = () => {
       password: formState.newPassword.value
     };
 
+    try {
+      const passwordValidation = await validateActualPassword(
+        userData.actualpassword,
+        userData.password
+      );
+
+      if (!passwordValidation.valid) {
+        setFormState((prev) => ({
+          ...prev,
+          password: {
+            ...prev.password,
+            isValid: false,
+            showError: true
+          }
+        }));
+
+        toast.error(passwordValidation.message || "Contraseña actual incorrecta");
+        return;
+      }
+    } catch (error) {
+      setFormState((prev) => ({
+        ...prev,
+        password: {
+          ...prev.password,
+          isValid: false,
+          showError: true
+        }
+      }));
+
+      toast.error("Error al validar la contraseña actual");
+      return;
+    }
+
     const response = await changeUser(userData);
 
     if (response?.error) {
-      toast.error(response?.e?.response?.data || "Error al actualizar usuario");
+      toast.error("Error al actualizar usuario");
     } else {
       toast.success("Usuario actualizado exitosamente");
     }
   };
 
   const handleDeleteAccount = () => {
-    // Lógica para eliminar cuenta (puedes personalizarla según lo necesario)
-    toast.success("Cuenta eliminada exitosamente");
+    navigate("/settings/delete-account");
   };
+
+  if (loading) return <div>Cargando...</div>;
 
   return (
     <div className="user-settings">

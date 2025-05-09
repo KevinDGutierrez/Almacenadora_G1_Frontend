@@ -168,3 +168,63 @@
     font-weight: bold;
     color: white;
 }
+
+/* Centra el contenedor del formulario */
+.delete-account-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro y transparente */
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Estilo del formulario y sus elementos */
+.delete-account-form h2 {
+  color: #fff;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Contenedor para los inputs */
+.delete-account-form input {
+  margin-bottom: 10px;
+  padding: 10px;
+  width: 100%;
+  max-width: 400px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff; /* Fondo blanco para los inputs */
+  color: #333;
+  font-size: 14px;
+}
+
+/* Estilo para las etiquetas de los inputs (fuera del contenedor de inputs) */
+.delete-account-form label {
+  color: #fff;
+  font-size: 16px;
+  margin-bottom: 5px;
+  display: block;
+}
+
+/* Estilo del botón de eliminar cuenta */
+.delete-account-form button {
+  background-color: #e60000;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  width: 100%;
+  max-width: 400px;
+  margin-top: 20px;
+}
+
+/* Hover effect for button */
+.delete-account-form button:hover {
+  background-color: #c10000;
+}
