@@ -12,6 +12,7 @@ import {
   Groups as GroupsIcon,
   AlignVerticalBottom as AlignVerticalBottomIcon
 } from "@mui/icons-material";
+import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import { useNavigate, useLocation, Outlet } from "react-router-dom";
 import {
   drawerWidth, appBarSx, drawerSx, listItemButtonSx, listItemIconSx, listItemTextSx, mainContentSx,
@@ -22,6 +23,8 @@ const navItems = [
   { text: "Proveedores", icon: <PeopleIcon />, path: "/suppliers" },
   { text: "Clientes", icon: <GroupsIcon />, path: "/clients" },
   { text: "Estadisticas", icon: <AlignVerticalBottomIcon />, path: "/estadistic" },
+  { text: "Movimientos", icon: <SwapHorizIcon />, path: "/movement" },
+  { text: "inventarios", icon: <SwapHorizIcon />, path: "/inventary" },
 ];
 
 export default function Sidebar() {
