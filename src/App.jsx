@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
 import ClientPage from "./pages/clients/ClientPage";
 import EstadisticPage from "./pages/estadistics/EstadisticPage";
+import SupplierPage from "./pages/suppliers/SupplierPage";
 
 export default function App() {
   return (
@@ -10,6 +11,7 @@ export default function App() {
         <Route index element={<div>Bienvenido a Almacenadora G1</div>} />
         <Route path="clients/*" element={<ClientPage />} />
         <Route path="estadistic/*" element={<EstadisticPage />} />
+        <Route path="suppliers/*" element={<SupplierPage />} />
       </Route>
     </Routes>
   );
