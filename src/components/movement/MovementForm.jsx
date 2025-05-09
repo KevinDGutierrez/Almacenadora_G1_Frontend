@@ -11,9 +11,9 @@ export default function MovementForm() {
     quantity: "",
     type: "",
     date: "",
-    employeeId: "",  // ID del empleado en formato ObjectId de MongoDB
-    reason: "",      // Motivo del movimiento
-    destination: ""   // Destino del movimiento
+    employeeId: "",
+    reason: "",
+    destination: ""
   });
 
   const handleChange = (e) => {
@@ -33,91 +33,74 @@ export default function MovementForm() {
   };
 
   return (
-    <Paper sx={{ maxWidth: 600, p: 3, mx: "auto", mt: 4, backgroundColor: "#cad2c5", borderRadius: "10px" }}>
-      <Typography variant="h5" gutterBottom sx={{ color: "#354f52", fontWeight: "bold" }}>
+    <Paper sx={{ maxWidth: 700, p: 4, mx: "auto", mt: 4, backgroundColor: "#272125", color: "#c7c7c3" }}>
+      <Typography variant="h4" gutterBottom>
         Registrar Movimiento
       </Typography>
 
       <Box component="form" onSubmit={handleSubmit}>
-        <TextField
-          label="ID de Producto"
-          name="productId"
-          value={form.productId}
-          onChange={handleChange}
-          fullWidth
-          required
-          margin="normal"
-          sx={{ backgroundColor: "#84a98c", borderRadius: "5px", boxShadow: "0 4px 10px rgba(0,0,0,0.1)" }}
-        />
-        <TextField
-          label="Cantidad"
-          name="quantity"
-          value={form.quantity}
-          onChange={handleChange}
-          type="number"
-          fullWidth
-          required
-          margin="normal"
-          sx={{ backgroundColor: "#84a98c", borderRadius: "5px", boxShadow: "0 4px 10px rgba(0,0,0,0.1)" }}
-        />
-        <TextField
-          label="ID de Empleado (ObjectId)"
-          name="employeeId"
-          value={form.employeeId}
-          onChange={handleChange}
-          fullWidth
-          required
-          margin="normal"
-          sx={{ backgroundColor: "#84a98c", borderRadius: "5px", boxShadow: "0 4px 10px rgba(0,0,0,0.1)" }}
-        />
-        <TextField
-          label="Motivo"
-          name="reason"
-          value={form.reason}
-          onChange={handleChange}
-          fullWidth
-          required
-          margin="normal"
-          sx={{ backgroundColor: "#84a98c", borderRadius: "5px", boxShadow: "0 4px 10px rgba(0,0,0,0.1)" }}
-        />
-        <TextField
-          label="Destino"
-          name="destination"
-          value={form.destination}
-          onChange={handleChange}
-          fullWidth
-          required
-          margin="normal"
-          sx={{ backgroundColor: "#84a98c", borderRadius: "5px", boxShadow: "0 4px 10px rgba(0,0,0,0.1)" }}
-        />
-        <TextField
-          label="Tipo (entrada/salida)"
-          name="type"
-          value={form.type}
-          onChange={handleChange}
-          fullWidth
-          required
-          margin="normal"
-          sx={{ backgroundColor: "#84a98c", borderRadius: "5px", boxShadow: "0 4px 10px rgba(0,0,0,0.1)" }}
-        />
+        {[
+          { label: "ID de Producto", name: "productId" },
+          { label: "Cantidad", name: "quantity", type: "number" },
+          { label: "ID de Empleado (ObjectId)", name: "employeeId" },
+          { label: "Motivo", name: "reason" },
+          { label: "Destino", name: "destination" },
+          { label: "Tipo (entrada/salida)", name: "type" }
+        ].map((field) => (
+          <TextField
+            key={field.name}
+            label={field.label}
+            name={field.name}
+            type={field.type || "text"}
+            value={form[field.name]}
+            onChange={handleChange}
+            fullWidth
+            required
+            margin="normal"
+            variant="outlined"
+            sx={{
+              input: { color: "#fff" },
+              label: { color: "#c7c7c3" },
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": { borderColor: "#c7c7c3" },
+                "&:hover fieldset": { borderColor: "#fff" },
+                "&.Mui-focused fieldset": { borderColor: "#fff" }
+              }
+            }}
+          />
+        ))}
+
         <TextField
           label="Fecha"
           name="date"
+          type="date"
           value={form.date}
           onChange={handleChange}
-          type="date"
           fullWidth
           required
           margin="normal"
           InputLabelProps={{ shrink: true }}
-          sx={{ backgroundColor: "#84a98c", borderRadius: "5px", boxShadow: "0 4px 10px rgba(0,0,0,0.1)" }}
+          sx={{
+            input: { color: "#fff" },
+            label: { color: "#c7c7c3" },
+            "& .MuiOutlinedInput-root": {
+              "& fieldset": { borderColor: "#c7c7c3" },
+              "&:hover fieldset": { borderColor: "#fff" },
+              "&.Mui-focused fieldset": { borderColor: "#fff" }
+            }
+          }}
         />
 
-        <Button 
+        <Button
           type="submit"
           variant="contained"
           fullWidth
-          sx={{ mt: 2, backgroundColor: "#52796f", '&:hover': { backgroundColor: "#84a98c" }, borderRadius: "5px" }}
+          sx={{
+            mt: 3,
+            backgroundColor: "#3b4353",
+            color: "#fff",
+            "&:hover": { backgroundColor: "#505a6b" }
+          }}
         >
           Registrar
         </Button>
@@ -125,7 +108,14 @@ export default function MovementForm() {
         <Button
           onClick={() => navigate("/movements")}
           startIcon={<ArrowBackIcon />}
-          sx={{ mt: 2, color: "#354f52", border: "2px solid #354f52", borderRadius: "5px", '&:hover': { backgroundColor: "#84a98c" } }}
+          fullWidth
+          sx={{
+            mt: 2,
+            color: "#c7c7c3",
+            borderColor: "#c7c7c3",
+            border: "1px solid",
+            "&:hover": { backgroundColor: "#3b4353" }
+          }}
         >
           Regresar
         </Button>

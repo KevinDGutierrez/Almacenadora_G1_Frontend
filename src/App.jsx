@@ -14,7 +14,7 @@ export default function App() {
         <Route path="clients/*" element={<ClientPage />} />
         <Route path="estadistic/*" element={<EstadisticPage />} />
         <Route path="suppliers/*" element={<SupplierPage />} />
-        <Route path="movement/*" element={<MovementPage />} />
+        <Route path="movements/*" element={<MovementPage />} />
         <Route path="inventary/*" element={<InventaryReport />} />
       </Route>
     </Routes>

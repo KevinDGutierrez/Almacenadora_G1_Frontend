@@ -45,6 +45,7 @@ export const obtenerHistorial = async (producto) => {
   try {
     const { data } = await apiClient.get(urlGethistorial);
     return data;
+    console.log(data);
   } catch (error) {
     console.error("Error al obtener historial del producto", error);
     return { error: true, msg: error?.response?.data?.msg || "Error inesperado" };

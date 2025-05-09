@@ -23,7 +23,7 @@ const navItems = [
   { text: "Proveedores", icon: <PeopleIcon />, path: "/suppliers" },
   { text: "Clientes", icon: <GroupsIcon />, path: "/clients" },
   { text: "Estadisticas", icon: <AlignVerticalBottomIcon />, path: "/estadistic" },
-  { text: "Movimientos", icon: <SwapHorizIcon />, path: "/movement" },
+  { text: "Movimientos", icon: <SwapHorizIcon />, path: "/movements" },
   { text: "inventarios", icon: <SwapHorizIcon />, path: "/inventary" },
 ];
 
