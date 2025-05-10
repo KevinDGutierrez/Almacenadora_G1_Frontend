@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const apiClient = axios.create({
-  baseURL: "http://127.0.0.1:8080/AlmacenadoraG1/vlm/",
+  baseURL: "http://127.0.0.1:3000/AlmacenadoraG1/vlm/",
   timeout: 5000,
 });
 
@@ -73,7 +73,7 @@ export const getUser = async () => {
 
 export const deleteUserRequest = async (data) => {
   try {
-    const response = await apiClient.put("/users/delete", data );
+    const response = await apiClient.delete("/users/delete", { data });
     return response;
   } catch (e) {
     console.error("Error al eliminar usuario:", e);

@@ -9,8 +9,8 @@ export const useUser = () => {
     const loadUser = async () => {
       const result = await getUser();
 
-      if (!result.error) {
-        setUser(result); 
+      if (!result.error && result.success) {
+        setUser(result.user);
       } else {
         console.error("Error al cargar el usuario:", result.e);
       }

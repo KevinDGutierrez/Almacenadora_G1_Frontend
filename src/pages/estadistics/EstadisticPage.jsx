@@ -7,19 +7,27 @@ export default function Estadisticas() {
   const [estadisticas, setEstadisticas] = useState(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
+    useEffect(() => {
+    let imageUrl;
+
     const fetchEstadisticas = async () => {
       try {
-        const imageBlob = await getEstadisticas(); 
-        const imageUrl = URL.createObjectURL(imageBlob); 
-        setEstadisticas(imageUrl); 
+        const imageBlob = await getEstadisticas();
+        imageUrl = URL.createObjectURL(imageBlob);
+        setEstadisticas(imageUrl);
       } catch (error) {
         console.error("Error al cargar estadísticas", error);
-        navigate("/estadistic"); 
+        navigate("/estadistic");
       }
     };
 
     fetchEstadisticas();
+
+    return () => {
+      if (imageUrl) {
+        URL.revokeObjectURL(imageUrl);
+      }
+    };
   }, []);
 
   return (

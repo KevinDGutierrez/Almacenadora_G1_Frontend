@@ -1,14 +1,13 @@
 import { Routes, Route } from "react-router-dom";
 import { UserSettings } from "./UserSettings";
 import { DeleteAccount } from "./DeleteAccount";
+import { Outlet } from "react-router-dom";
+
 
 export const Settings = () => {
   return (
     <div className="settings-container">
-      <Routes>
-        <Route path="/" element={<UserSettings />} />
-        <Route path="/delete-account" element={<DeleteAccount />} />
-      </Routes>
+      <Outlet />
     </div>
   );
 };

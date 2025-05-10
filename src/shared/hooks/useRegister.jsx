@@ -7,7 +7,7 @@ export const useRegister = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const register = async (name, surname, username, email, password, phone) => {
+  const register = async ( {name, surname, username, email, password, phone} ) => {
     setIsLoading(true);
 
     try {
@@ -28,9 +28,10 @@ export const useRegister = () => {
         return;
       }
 
-      localStorage.setItem('user', JSON.stringify(userDetails));
-      toast.success('Usuario registrado');
-      navigate('/');
+      toast.success('Usuario registrado correctamente');
+      localStorage.removeItem('user'); 
+      localStorage.removeItem('token');
+      navigate('/auth');
     } catch (error) {
       const msg =
         error.response?.data?.msg ||

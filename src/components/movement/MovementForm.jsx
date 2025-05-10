@@ -7,14 +7,15 @@ import { registrarMovimiento } from "../../services/movementService.jsx";
 export default function MovementForm() {
   const navigate = useNavigate();
   const [form, setForm] = useState({
-    productId: "",
-    quantity: "",
-    type: "",
-    date: "",
-    employeeId: "",
-    reason: "",
-    destination: ""
+    producto: "",
+    cantidad: "",
+    tipo: "",
+    fecha: "",
+    empleado: "",
+    motivo: "",
+    destino: ""
   });
+
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -40,12 +41,12 @@ export default function MovementForm() {
 
       <Box component="form" onSubmit={handleSubmit}>
         {[
-          { label: "ID de Producto", name: "productId" },
-          { label: "Cantidad", name: "quantity", type: "number" },
-          { label: "ID de Empleado (ObjectId)", name: "employeeId" },
-          { label: "Motivo", name: "reason" },
-          { label: "Destino", name: "destination" },
-          { label: "Tipo (entrada/salida)", name: "type" }
+          { label: "ID de Producto", name: "producto" },
+          { label: "Cantidad", name: "cantidad", type: "number" },
+          { label: "ID de Empleado", name: "empleado" },
+          { label: "Motivo", name: "motivo" },
+          { label: "Destino", name: "destino" },
+          { label: "Tipo(entrata/salida)", name: "tipo" }
         ].map((field) => (
           <TextField
             key={field.name}
@@ -72,9 +73,9 @@ export default function MovementForm() {
 
         <TextField
           label="Fecha"
-          name="date"
+          name="fecha"
           type="date"
-          value={form.date}
+          value={form.fecha}
           onChange={handleChange}
           fullWidth
           required

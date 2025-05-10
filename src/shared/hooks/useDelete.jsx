@@ -1,31 +1,30 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import toast from 'react-hot-toast';
-import { deleteUserRequest } from '../../services/index';
+import { deleteUserRequest } from "../../services/api";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 export const useDelete = () => {
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const deleteUser = async ({ username, password }) => {
-    setLoading(true);
+  const deleteUser = async (data) => {
+    try {
+      const response = await deleteUserRequest(data);
 
-    const response = await deleteUserRequest({ username, password });
+      if (response?.error || response.status !== 200) {
+        throw new Error("Error al eliminar");
+      }
 
-    setLoading(false);
+      toast.success("Usuario eliminado exitosamente");
 
-    if (response.error) {
-      return toast.error(
-        response.e?.response?.data?.msg || 'Ocurrió un error al eliminar el usuario'
-      );
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+
+      navigate("/auth");
+    } catch (e) {
+      toast.error("No se pudo eliminar la cuenta");
+      console.error(e);
+      return { error: true, e };
     }
-
-    toast.success('Usuario desactivado exitosamente');
-    navigate('/auth');
   };
 
-  return {
-    deleteUser,
-    loading,
-  };
+  return { deleteUser };
 };

@@ -153,17 +153,26 @@ export const UserSettings = () => {
       return;
     }
 
+    if (formState.newPassword.value && formState.newPassword.value.length < 8) {
+      toast.error("La nueva contraseña debe tener al menos 8 caracteres.");
+      return;
+    }
+
     const response = await changeUser(userData);
 
     if (response?.error) {
       toast.error("Error al actualizar usuario");
     } else {
       toast.success("Usuario actualizado exitosamente");
+      if (response?.user) {
+        localStorage.setItem("user", JSON.stringify(response.user));
+        window.location.reload();
+      }
     }
   };
 
   const handleDeleteAccount = () => {
-    navigate("/settings/delete-account");
+    navigate("/dashboard/settings/delete-account");
   };
 
   if (loading) return <div>Cargando...</div>;
@@ -171,7 +180,7 @@ export const UserSettings = () => {
   return (
     <div className="user-settings">
       <form className="settings-form" onSubmit={handleFormSubmit}>
-        <span className="hola">SETTINGS</span>
+        <h2 style={{ textAlign: "center", marginBottom: "1rem" }}>SETTINGS</h2>
         {inputs.map((input) => (
           <Input
             key={input.field}

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Table, TableHead, TableRow, TableCell, TableBody, Button, Paper, Typography, CircularProgress, Box } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import { obtenerHistorial } from "../../services/movementService";
-import { InputField } from "../input.jsx";
+import { InputField } from "../InputField.jsx";
 
 export default function MovementList() {
   const { producto: productoParam } = useParams();
@@ -23,7 +23,7 @@ export default function MovementList() {
     setError(null);
     try {
       const response = await obtenerHistorial(producto);
-      setMovements(Array.isArray(response) ? response : []);
+      setMovements(Array.isArray(response.historial) ? response.historial : []);
     } catch (err) {
       console.error("Error cargando movimientos:", err);
       setError("Hubo un problema al cargar los movimientos.");
@@ -107,11 +107,11 @@ export default function MovementList() {
           <TableBody>
             {movements.map((m) => (
               <TableRow key={m._id} sx={{ '&:hover': { backgroundColor: '#3b4353' } }}>
-                <TableCell sx={{ color: "#fff" }}>{m.productId}</TableCell>
-                <TableCell sx={{ color: "#fff" }}>{m.quantity}</TableCell>
-                <TableCell sx={{ color: "#fff" }}>{m.type}</TableCell>
-                <TableCell sx={{ color: "#fff" }}>{m.employeeId}</TableCell>
-                <TableCell sx={{ color: "#fff" }}>{new Date(m.date).toLocaleDateString()}</TableCell>
+                <TableCell>{m.producto?.name || m.producto}</TableCell>
+                <TableCell>{m.cantidad}</TableCell>
+                <TableCell>{m.tipo}</TableCell>
+                <TableCell>{m.empleado?.name || m.empleado}</TableCell>
+                <TableCell>{new Date(m.fecha).toLocaleDateString()}</TableCell>
               </TableRow>
             ))}
           </TableBody>

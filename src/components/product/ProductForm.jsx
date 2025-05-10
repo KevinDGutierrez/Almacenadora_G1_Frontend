@@ -1,15 +1,17 @@
-import { FormControl,InputLabel,Select,MenuItem,TextField, Button, Paper, Typography, Box } from "@mui/material";
+import { FormControl, InputLabel, Select, MenuItem, TextField, Button, Paper, Typography, Box } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { createProduct, getProductById, updateProduct } from "../../services/Product-service.jsx"; 
+import { createProduct, getProductById, updateProduct } from "../../services/Product-service.jsx";
 import { getAllCategories } from "../../services/CategoriaService";
+import { getSuppliers } from "../../services/supplierService.jsx";
 
 export default function ProductForm() {
-  const { id } = useParams();          // ← aquí toma el id desde la URL
-  const navigate = useNavigate();  
+  const { id } = useParams();
+  const navigate = useNavigate();
 
-  const [categories, setCategories] = useState([]);   // ← aquí va
+  const [categories, setCategories] = useState([]);
+  const [suppliers, setSuppliers] = useState([]);
   const [product, setProduct] = useState({
     name: "",
     category: "",
@@ -35,18 +37,31 @@ export default function ProductForm() {
       }
     };
 
+    const fetchSuppliers = async () => {
+      try {
+        const response = await getSuppliers();
+        if (response.success) {
+          setSuppliers(response.suppliers);
+        } else {
+          console.error("Error al cargar proveedores:", response);
+        }
+      } catch (error) {
+        console.error("Error al cargar proveedores:", error);
+      }
+    };
+
     const loadProduct = async () => {
       try {
         const data = await getProductById(id);
         setProduct({
           name: data.name || "",
-          category: data.category || "",
+          category: data.category?._id || "",
           stock: data.stock || "",
-          supplier: data.supplier || "",
+          supplier: data.supplier?._id || "",
           description: data.description || "",
           entryDate: data.entryDate ? data.entryDate.split("T")[0] : "",
           fechaDeVencimiento: data.fechaDeVencimiento ? data.fechaDeVencimiento.split("T")[0] : "",
-          precioUnitario: data.precioUnitario || "",
+          precioUnitario: data.precioUnitario || ""
         });
       } catch (error) {
         console.error("Error al cargar producto", error);
@@ -62,10 +77,10 @@ export default function ProductForm() {
     }
 
     fetchCategories();
+    fetchSuppliers();
 
     if (id) loadProduct();
-  }, [id]);
-
+  }, [id, navigate]);
 
   const handleChange = (e) => {
     setProduct({ ...product, [e.target.name]: e.target.value });
@@ -81,159 +96,123 @@ export default function ProductForm() {
       }
       navigate("/products");
     } catch (error) {
-      const res = { status: () => {} }; 
       alert("Error al guardar producto");
-    
+      console.error("Error al guardar producto:", error);
+    }
   };
-  }
-  const textFieldStyle = {
-  backgroundColor: "white ",
-  borderRadius: "5px",
-  boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
-  input: { color: "#000" },    
-  "& label": { color: "#000" },  
-  "& .MuiInputBase-root": { color: "#000" } 
-};
 
-return (
-  <Paper sx={{ maxWidth: 600, p: 3, mx: "auto", mt: 4, backgroundColor: "#f1f5f5", borderRadius: "10px" }}>
-    <Typography variant="h5" gutterBottom sx={{ color: "#354f52", fontWeight: "bold" }}>
-      {id ? "Editar Producto" : "Registrar Producto"}
-    </Typography>
+  return (
+    <Paper sx={{ maxWidth: 600, p: 3, mx: "auto", mt: 4 }}>
+      <Typography variant="h5" gutterBottom>
+        {id ? "Editar Producto" : "Registrar Producto"}
+      </Typography>
 
-    <Box component="form" onSubmit={handleSubmit}>
-      <TextField
-        label="Nombre"
-        name="name"
-        value={product.name}
-        onChange={handleChange}
-        fullWidth
-        required
-        margin="normal"
-        sx={textFieldStyle}
-      />
+      <Box component="form" onSubmit={handleSubmit}>
+        <TextField
+          label="Nombre"
+          name="name"
+          value={product.name}
+          onChange={handleChange}
+          fullWidth
+          required
+          margin="normal"
+        />
+        <FormControl fullWidth required margin="normal">
+          <InputLabel id="category-label">Categoría</InputLabel>
+          <Select
+            labelId="category-label"
+            name="category"
+            value={product.category}
+            onChange={handleChange}
+            label="Categoría"
+          >
+            <MenuItem value=""><em>Seleccionar</em></MenuItem>
+            {categories.map((cat) => (
+              <MenuItem key={cat._id} value={cat._id}>
+                {cat.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
-      <FormControl fullWidth required margin="normal" sx={textFieldStyle}>
-        <InputLabel id="category-label" sx={{ color: "#000" }}>Categoría</InputLabel>
-      <Select
-        labelId="category-label"
-        name="category"
-        value={product.category}
-        onChange={handleChange}
-        label="Categoría"
-        sx={{ color: "#000" }}
-      >
-      <MenuItem value=""><em>Seleccionar</em></MenuItem>
-      {categories.map((cat) => (
-        <MenuItem key={cat._id} value={cat._id}>
-          {cat.name}
-        </MenuItem>
-      ))}
-      </Select>
-      </FormControl>
+        <TextField
+          label="Cantidad en stock"
+          name="stock"
+          type="number"
+          value={product.stock}
+          onChange={handleChange}
+          fullWidth
+          required
+          margin="normal"
+        />
+        <FormControl fullWidth required margin="normal">
+          <InputLabel id="supplier-label">Proveedor</InputLabel>
+          <Select
+            labelId="supplier-label"
+            name="supplier"
+            value={product.supplier}
+            onChange={handleChange}
+            label="Proveedor"
+          >
+            <MenuItem value=""><em>Seleccionar</em></MenuItem>
+            {suppliers.map((sup) => (
+              <MenuItem key={sup._id} value={sup._id}>
+                {sup.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
-      <TextField
-        label="Cantidad en stock"
-        name="stock"
-        type="number"
-        value={product.stock}
-        onChange={handleChange}
-        fullWidth
-        required
-        margin="normal"
-        sx={textFieldStyle}
-      />
+        <TextField
+          label="Descripción"
+          name="description"
+          value={product.description}
+          onChange={handleChange}
+          fullWidth
+          required
+          margin="normal"
+        />
+        <TextField
+          label="Fecha de entrada"
+          name="entryDate"
+          type="date"
+          value={product.entryDate}
+          onChange={handleChange}
+          fullWidth
+          required
+          margin="normal"
+          InputLabelProps={{ shrink: true }}
+        />
+        <TextField
+          label="Fecha de vencimiento"
+          name="fechaDeVencimiento"
+          type="date"
+          value={product.fechaDeVencimiento}
+          onChange={handleChange}
+          fullWidth
+          required
+          margin="normal"
+          InputLabelProps={{ shrink: true }}
+        />
+        <TextField
+          label="Precio unitario"
+          name="precioUnitario"
+          type="number"
+          value={product.precioUnitario}
+          onChange={handleChange}
+          fullWidth
+          required
+          margin="normal"
+        />
 
-      <TextField
-        label="Proveedor"
-        name="supplier"
-        value={product.supplier}
-        onChange={handleChange}
-        fullWidth
-        required
-        margin="normal"
-        sx={textFieldStyle}
-      />
+        <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
+          {id ? "Actualizar" : "Registrar"}
+        </Button>
 
-      <TextField
-        label="Descripción"
-        name="description"
-        value={product.description}
-        onChange={handleChange}
-        fullWidth
-        required
-        margin="normal"
-        sx={textFieldStyle}
-      />
-
-      <TextField
-        label="Fecha de entrada"
-        name="entryDate"
-        type="date"
-        value={product.entryDate}
-        onChange={handleChange}
-        fullWidth
-        required
-        margin="normal"
-        InputLabelProps={{ shrink: true }}
-        sx={textFieldStyle}
-      />
-
-      <TextField
-        label="Fecha de vencimiento"
-        name="fechaDeVencimiento"
-        type="date"
-        value={product.fechaDeVencimiento}
-        onChange={handleChange}
-        fullWidth
-        required
-        margin="normal"
-        InputLabelProps={{ shrink: true }}
-        sx={textFieldStyle}
-      />
-
-      <TextField
-        label="Precio unitario"
-        name="precioUnitario"
-        type="number"
-        value={product.precioUnitario}
-        onChange={handleChange}
-        fullWidth
-        required
-        margin="normal"
-        sx={textFieldStyle}
-      />
-
-      <Button 
-        type="submit" 
-        variant="contained" 
-        color="primary" 
-        fullWidth 
-        sx={{ 
-          mt: 2, 
-          backgroundColor: "#84a98c", 
-          '&:hover': { backgroundColor: "#52796f" },
-          borderRadius: "5px"
-        }}
-      >
-        {id ? "Actualizar" : "Registrar"}
-      </Button>
-
-      <Button
-        onClick={() => navigate("/products")}
-        startIcon={<ArrowBackIcon />}
-        sx={{ 
-          mt: 2, 
-          color: "#354f52", 
-          borderColor: "#354f52", 
-          borderRadius: "5px", 
-          border: "2px solid", 
-          '&:hover': { backgroundColor: "#f1f5f5" }
-        }}
-      >
-        Regresar
-      </Button>
-    </Box>
-  </Paper>
-);
+        <Button onClick={() => navigate("/products")} startIcon={<ArrowBackIcon />} sx={{ mt: 2 }}>
+          Regresar
+        </Button>
+      </Box>
+    </Paper>
+  );
 }

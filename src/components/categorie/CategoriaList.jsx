@@ -10,7 +10,7 @@ export default function CategoryList() {
   const [filteredCategories, setFilteredCategories] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [newCategory, setNewCategory] = useState({ name: "", description: "" });
-  const [error, setError] = useState(null); // Estado para manejar el error
+  const [error, setError] = useState(null); 
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -24,7 +24,7 @@ export default function CategoryList() {
           throw new Error("Error cargando categorías");
         }
       } catch (error) {
-        setError("No se pudieron cargar las categorías."); // Establecer mensaje de error
+        setError("No se pudieron cargar las categorías."); 
         console.error(error);
       }
     };
@@ -65,23 +65,11 @@ export default function CategoryList() {
   };
 
   return (
-    <Paper
-      elevation={4}
-      sx={{
-        mt: 4,
-        mx: "auto",
-        maxWidth: 800,
-        p: 4,
-        background: "linear-gradient(to top, #f9f9f9,rgb(0, 0, 0))"
-      }}
-    >
+    <Paper elevation={4} sx={{ mt: 4, mx: "auto", maxWidth: 800, p: 4 }}>
       <Typography variant="h4" color="primary" gutterBottom>
         Lista de Categorías
       </Typography>
-
-      {/* Mostrar error si hay algún problema */}
       {error && <Typography color="error">{error}</Typography>}
-
       <TextField
         label="Buscar Categoría"
         variant="outlined"
@@ -109,7 +97,7 @@ export default function CategoryList() {
             required
             fullWidth
           />
-          <Button type="submit" variant="contained" color="success">
+          <Button type="submit" variant="contained" >
             Agregar
           </Button>
         </Box>

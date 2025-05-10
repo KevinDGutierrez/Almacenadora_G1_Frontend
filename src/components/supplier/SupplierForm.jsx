@@ -5,16 +5,16 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { createSupplier, getSupplierById, updateSupplier } from "../../services/supplierService";
 
 export default function SupplierForm() {
-  const { id } = useParams(); 
+  const { id } = useParams();
   const navigate = useNavigate();
   const [form, setForm] = useState({
     name: "",
     email: "",
     phone: "",
     address: "",
-    productsSupplied: "" 
+    productsSupplied: ""
   });
-  const [isAdmin] = useState(true); 
+  const [isAdmin] = useState(true);
 
   useEffect(() => {
     if (id && !/^[a-fA-F0-9]{24}$/.test(id)) {
@@ -22,7 +22,7 @@ export default function SupplierForm() {
       navigate("/suppliers");
       return;
     }
-    
+
     const loadSupplier = async () => {
       try {
         const { supplier } = await getSupplierById(id);
@@ -30,23 +30,23 @@ export default function SupplierForm() {
           alert("Proveedor no encontrado.");
           navigate("/suppliers");
           return;
-        } 
-        setForm({
-            name: supplier.name || "",
-            email: supplier.email || "",
-            phone: supplier.phone || "",
-            address: supplier.address || "",
-            productsSupplied: (supplier.productsSupplied || []).join(", ")
-          });
-        } catch (error) {
-          console.error("Error al cargar proveedor", error);
-          alert("No se pudo cargar el proveedor.");
-          navigate("/suppliers");
         }
+        setForm({
+          name: supplier.name || "",
+          email: supplier.email || "",
+          phone: supplier.phone || "",
+          address: supplier.address || "",
+          productsSupplied: (supplier.productsSupplied || []).join(", ")
+        });
+      } catch (error) {
+        console.error("Error al cargar proveedor", error);
+        alert("No se pudo cargar el proveedor.");
+        navigate("/suppliers");
+      }
     };
     if (id) loadSupplier();
   }, [id]);
-  
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -78,7 +78,7 @@ export default function SupplierForm() {
   if (!isAdmin) return <Typography>No autorizado</Typography>;
 
   return (
-    <Paper sx={{ maxWidth: 600, p: 3, mx: "auto", mt: 4, bgcolor: "#272125", color: "#c7c7c3" }}>
+    <Paper sx={{ maxWidth: 600, p: 3, mx: "auto", mt: 4 }}>
       <Typography variant="h5" gutterBottom>
         {id ? "Editar Proveedor" : "Nuevo Proveedor"}
       </Typography>
@@ -92,8 +92,6 @@ export default function SupplierForm() {
           fullWidth
           required
           margin="normal"
-          InputLabelProps={{ style: { color: '#c7c7c3' } }}
-          InputProps={{ style: { color: '#ffffff' } }}
         />
         <TextField
           label="Correo electrónico"
@@ -104,8 +102,6 @@ export default function SupplierForm() {
           fullWidth
           required
           margin="normal"
-          InputLabelProps={{ style: { color: '#c7c7c3' } }}
-          InputProps={{ style: { color: '#ffffff' } }}
         />
         <TextField
           label="Teléfono"
@@ -114,8 +110,6 @@ export default function SupplierForm() {
           onChange={handleChange}
           fullWidth
           margin="normal"
-          InputLabelProps={{ style: { color: '#c7c7c3' } }}
-          InputProps={{ style: { color: '#ffffff' } }}
         />
         <TextField
           label="Dirección"
@@ -124,8 +118,6 @@ export default function SupplierForm() {
           onChange={handleChange}
           fullWidth
           margin="normal"
-          InputLabelProps={{ style: { color: '#c7c7c3' } }}
-          InputProps={{ style: { color: '#ffffff' } }}
         />
         <TextField
           label="Productos suministrados (separados por coma)"
@@ -134,15 +126,13 @@ export default function SupplierForm() {
           onChange={handleChange}
           fullWidth
           margin="normal"
-          InputLabelProps={{ style: { color: '#c7c7c3' } }}
-          InputProps={{ style: { color: '#ffffff' } }}
         />
 
-        <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2, bgcolor: '#3b4353' }}>
+        <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
           {id ? "Actualizar" : "Crear"}
         </Button>
 
-        <Button onClick={() => navigate("/suppliers")} startIcon={<ArrowBackIcon />} sx={{ mt: 2, color: '#c7c7c3' }}>
+        <Button onClick={() => navigate("/suppliers")} startIcon={<ArrowBackIcon />} sx={{ mt: 2 }}>
           Regresar
         </Button>
       </Box>

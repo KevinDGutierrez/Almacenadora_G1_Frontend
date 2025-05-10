@@ -1,11 +1,11 @@
 import axios from "axios";
 
 const apiClient = axios.create({
-  baseURL: "http://127.0.0.1:8080/AlmacenadoraG1/vlm/",
+  baseURL: "http://127.0.0.1:3000/AlmacenadoraG1/vlm/movements/",
   timeout: 5000,
 });
 
-const urlGethistorial = 'http://localhost:8080/AlmacenadoraG1/vlm/movements/681af3482a38ee1ba65b37ad';
+const urlGethistorial = 'http://localhost:3000/AlmacenadoraG1/vlm/movements/681af3482a38ee1ba65b37ad';
 
 apiClient.interceptors.request.use(
   (config) => {
@@ -43,9 +43,8 @@ export const generarInformeMovimientos = async (filtros) => {
 
 export const obtenerHistorial = async (producto) => {
   try {
-    const { data } = await apiClient.get(urlGethistorial);
+    const { data } = await apiClient.get(`${producto}`);
     return data;
-    console.log(data);
   } catch (error) {
     console.error("Error al obtener historial del producto", error);
     return { error: true, msg: error?.response?.data?.msg || "Error inesperado" };

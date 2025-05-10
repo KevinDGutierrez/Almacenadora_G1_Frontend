@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Logo } from './Logo';
 import { Input } from "./Input";
+import { useNavigate } from 'react-router-dom';
 import {
     validateUsername,
     validateEmail,
@@ -17,6 +18,7 @@ import videoRegister from "../assets/video/Register.mp4";
 
 export const Register = ({ switchAuthHandler }) => {
     const { register, isLoading } = useRegister();
+    const navigate = useNavigate();
 
     const [formState, setFormState] = useState({
         name: {
@@ -110,11 +112,13 @@ export const Register = ({ switchAuthHandler }) => {
             username: formState.username.value,
             email: formState.email.value,
             password: formState.password.value,
-            phone: formState.phone.value
+            phone: formState.phone.value,
+            role: "EMPLOYEE"
         };
 
         console.log("Datos enviados:", data);
         register(data);
+        navigate('/dashboard');
     };
 
     const isSubmitButtonDisable = isLoading ||

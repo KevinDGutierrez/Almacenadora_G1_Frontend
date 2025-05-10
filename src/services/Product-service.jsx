@@ -1,11 +1,9 @@
 import axios from "axios";
 
-
 const apiClient = axios.create({
   baseURL: "http://127.0.0.1:3000/AlmacenadoraG1/vlm",
   timeout: 5000,  
 });
-
 
 apiClient.interceptors.request.use(
   (config) => {
@@ -21,17 +19,15 @@ apiClient.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-
 export const getProducts = async () => {
-  try {
-    const response = await apiClient.get("/products"); 
-    return response.data.products;  
-  } catch (error) {
-    return res.error("Error al obtener productos:", error.response?.data || error);
-    throw error;
-  }
+    try {
+        const response = await apiClient.get("/products");
+        return response.data.products;
+    } catch (error) {
+        console.error("Error al obtener productos:", error.response?.data || error);
+        throw error;
+    }
 };
-//probaste crearla por backend?
 
 export const createProduct = async (productData) => {
   try {
@@ -53,19 +49,19 @@ export const getProductByName = async (name) => {
 };
 
 export const getProductById = async (id) => {
-  try {
-    const response = await apiClient.get(`/products/${id}`);  
-    return response.data;  
-  } catch (error) {
-    console.error("Error al obtener producto por ID:", error.response?.data || error);
-    throw error;
-  }
+    try {
+        const response = await apiClient.get(`/products/${id}`);
+        return response.data.product;
+    } catch (error) {
+        console.error("Error al obtener producto por ID:", error.response?.data || error);
+        throw error;
+    }
 };
 
 export const updateProduct = async (id, productData) => {
   try {
     const response = await apiClient.put(`/products/${id}`, productData); 
-    return response.data;  
+    return response.data.product;  
   } catch (error) {
     console.error("Error al actualizar producto:", error.response?.data || error);
     throw error;

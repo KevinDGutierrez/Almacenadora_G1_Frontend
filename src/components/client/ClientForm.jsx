@@ -5,7 +5,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { createClient, getClientById, updateClient } from "../../services/clientService.jsx";
 
 export default function ClientForm() {
-  const { id } = useParams(); 
+  const { id } = useParams();
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
@@ -15,7 +15,7 @@ export default function ClientForm() {
     address: ""
   });
 
-  const [isAdmin] = useState(true); 
+  const [isAdmin] = useState(true);
 
   useEffect(() => {
     if (id && !/^[a-fA-F0-9]{24}$/.test(id)) {
@@ -66,8 +66,8 @@ export default function ClientForm() {
   if (!isAdmin) return <Typography>No autorizado</Typography>;
 
   return (
-    <Paper sx={{ maxWidth: 600, p: 3, mx: "auto", mt: 4, backgroundColor: "#cad2c5", borderRadius: "10px" }}>
-      <Typography variant="h5" gutterBottom sx={{ color: "#354f52", fontWeight: "bold" }}>
+    <Paper sx={{ maxWidth: 600, p: 3, mx: "auto", mt: 4 }}>
+      <Typography variant="h5" gutterBottom>
         {id ? "Editar Cliente" : "Nuevo Cliente"}
       </Typography>
 
@@ -80,11 +80,6 @@ export default function ClientForm() {
           fullWidth
           required
           margin="normal"
-          sx={{
-            backgroundColor: "#84a98c", 
-            borderRadius: "5px", 
-            boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)"
-          }}
         />
         <TextField
           label="Correo electrónico"
@@ -95,11 +90,6 @@ export default function ClientForm() {
           fullWidth
           required
           margin="normal"
-          sx={{
-            backgroundColor: "#84a98c", 
-            borderRadius: "5px", 
-            boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)"
-          }}
         />
         <TextField
           label="Teléfono"
@@ -108,11 +98,6 @@ export default function ClientForm() {
           onChange={handleChange}
           fullWidth
           margin="normal"
-          sx={{
-            backgroundColor: "#84a98c", 
-            borderRadius: "5px", 
-            boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)"
-          }}
         />
         <TextField
           label="Dirección"
@@ -121,40 +106,13 @@ export default function ClientForm() {
           onChange={handleChange}
           fullWidth
           margin="normal"
-          sx={{
-            backgroundColor: "#84a98c", 
-            borderRadius: "5px", 
-            boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)"
-          }}
         />
 
-        <Button 
-          type="submit" 
-          variant="contained" 
-          color="primary" 
-          fullWidth 
-          sx={{ 
-            mt: 2, 
-            backgroundColor: "#52796f", 
-            '&:hover': { backgroundColor: "#84a98c" },
-            borderRadius: "5px"
-          }}
-        >
+        <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
           {id ? "Actualizar" : "Crear"}
         </Button>
 
-        <Button
-          onClick={() => navigate("/clients")}
-          startIcon={<ArrowBackIcon />}
-          sx={{ 
-            mt: 2, 
-            color: "#354f52", 
-            borderColor: "#354f52", 
-            borderRadius: "5px", 
-            border: "2px solid", 
-            '&:hover': { backgroundColor: "#84a98c" }
-          }}
-        >
+        <Button onClick={() => navigate("/clients")} startIcon={<ArrowBackIcon />} sx={{ mt: 2 }}>
           Regresar
         </Button>
       </Box>

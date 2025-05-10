@@ -12,8 +12,8 @@ import {
   Inventory as InventoryIcon,
   Groups as GroupsIcon,
   Category as CategoryIcon,
-  AlignVerticalBottom as AlignVerticalBottomIcon,
-  ProductionQuantityLimits as ProductionQuantityLimitsIcon
+  Groups as GroupsIcon,
+  AlignVerticalBottom as AlignVerticalBottomIcon
 } from "@mui/icons-material";
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import ListIcon from '@mui/icons-material/List';
@@ -21,35 +21,26 @@ import { useNavigate, useLocation, Outlet } from "react-router-dom";
 import {
   drawerWidth, appBarSx, drawerSx, listItemButtonSx, listItemIconSx, listItemTextSx, mainContentSx,
 } from "./sidebarStyles";
-import { useUserDetails } from "../../shared/hooks/useUserDetails";
 
 const navItems = [
   { text: "Inicio", icon: <HomeIcon />, path: "/" },
-  { text: "Proveedores", icon: <InventoryIcon />, path: "/suppliers" },
-  { text: "Estadisticas", icon: <AlignVerticalBottomIcon />, path: "/estadistic" },
-  { text: "Movimientos", icon: <SwapHorizIcon />, path: "/movements" },
-  { text: "inventarios", icon: <ListIcon />, path: "/inventory" },
+  { text: "Proveedores", icon: <PeopleIcon />, path: "/suppliers" },
+  { text: "Movimientos", icon: <InventoryIcon />, path: "/movements" },
   { text: "Clientes", icon: <GroupsIcon />, path: "/clients" },
-  { text: "Productos", icon: <ProductionQuantityLimitsIcon />, path: "/products" },
+  { text: "Productos", icon: <CategoryIcon />, path: "/products" },
   { text: "Categorias", icon: <CategoryIcon />, path: "/categories" },
+  
+
 ];
 
 export default function Sidebar() {
   const [open, setOpen] = React.useState(true);
   const navigate = useNavigate();
   const location = useLocation();
-  const { isLogged } = useUserDetails();
 
-  const toggleDrawer = () => setOpen(!open);
-
-  // Evita renderizar el sidebar si no hay sesión
-  if (!isLogged) {
-    return (
-      <Box component="main" sx={mainContentSx}>
-        <Outlet />
-      </Box>
-    );
-  }
+  const toggleDrawer = () => {
+    setOpen(!open);
+  };
 
   return (
     <Box sx={{ display: "flex" }}>

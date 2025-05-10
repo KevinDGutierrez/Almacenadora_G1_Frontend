@@ -12,14 +12,14 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-export default function InventoryReport() {
+export default function InventoryInform() {
   const [report, setReport] = useState({ totalProductos: 0, valorInventario: 0, productos: [] });
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchInventoryReport = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:8080/informe-inventario");
+        const response = await axios.get("http://127.0.0.1:3000/inventory/informe-inventario");
         setReport(response.data);
       } catch (error) {
         console.error("Error al obtener el informe de inventario:", error);

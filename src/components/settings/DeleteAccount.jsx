@@ -2,17 +2,15 @@ import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useDelete } from "../../shared/hooks/useDelete";
 
-
 export const DeleteAccount = () => {
-  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { deleteUser  } = useDelete();
+  const { deleteUser } = useDelete();
 
   const handleDelete = async () => {
     const confirmed = window.confirm("¿Estás seguro que quieres eliminar tu cuenta?");
     if (!confirmed) return;
 
-    const response = await deleteUser({ username, password });
+    const response = await deleteUser({ password });
     if (response?.error) {
       toast.error(response?.e?.response?.data || "Error al eliminar la cuenta");
     } else {
@@ -21,20 +19,14 @@ export const DeleteAccount = () => {
   };
 
   return (
-    <div className="delete-account-form">
-      <h2>Eliminar Cuenta</h2>
-      <div>
-        <label htmlFor="username">Usuario</label>
-        <input
-          id="username"
-          type="text"
-          placeholder="Ingresa tu nombre de usuario"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-      </div>
-      <div>
-        <label htmlFor="password">Contraseña</label>
+    <div className="user-settings">
+      <form className="settings-form" onSubmit={(e) => { e.preventDefault(); handleDelete(); }}>
+        <h2 style={{ textAlign: "center", color: "white", marginBottom: "1rem" }}>
+          Eliminar Cuenta
+        </h2>
+        <label htmlFor="password" style={{ color: "white", fontWeight: "bold" }}>
+          Contraseña
+        </label>
         <input
           id="password"
           type="password"
@@ -42,8 +34,10 @@ export const DeleteAccount = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-      </div>
-      <button onClick={handleDelete}>Eliminar Cuenta</button>
+        <button type="submit" className="delete-button">
+          Eliminar Cuenta
+        </button>
+      </form>
     </div>
   );
 };

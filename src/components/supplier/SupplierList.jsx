@@ -9,13 +9,13 @@ import { deleteSupplier, getSuppliers } from "../../services/supplierService";
 export default function SupplierList() {
   const [suppliers, setSuppliers] = useState([]);
   const navigate = useNavigate();
-  const [isAdmin] = useState(true); 
+  const [isAdmin] = useState(true);
 
   useEffect(() => {
     const fetchSuppliers = async () => {
       const response = await getSuppliers();
-      if (Array.isArray(response)) {
-        setSuppliers(response);
+      if (response.success && Array.isArray(response.suppliers)) {
+        setSuppliers(response.suppliers);
       } else {
         console.error("Error cargando proveedores:", response);
       }
@@ -37,13 +37,13 @@ export default function SupplierList() {
   };
 
   return (
-    <Paper sx={{ mt: 4, mx: "auto", maxWidth: 900, p: 3, bgcolor: "#272125", color: "#c7c7c3" }}>
+    <Paper sx={{ mt: 4, mx: "auto", maxWidth: 900, p: 3 }}>
       <Typography variant="h4" gutterBottom>
         Lista de Proveedores
       </Typography>
 
       {isAdmin && (
-        <Button variant="contained" onClick={() => navigate("/suppliers/new")} sx={{ mb: 2, bgcolor: '#3b4353' }}>
+        <Button variant="contained" onClick={() => navigate("/suppliers/new")}>
           Agregar proveedor
         </Button>
       )}
@@ -51,35 +51,35 @@ export default function SupplierList() {
       <Table>
         <TableHead>
           <TableRow>
-          <TableCell sx={{ color: '#c7c7c3' }}>Nombre</TableCell>
-            <TableCell sx={{ color: '#c7c7c3' }}>Email</TableCell>
-            <TableCell sx={{ color: '#c7c7c3' }}>Teléfono</TableCell>
-            <TableCell sx={{ color: '#c7c7c3' }}>Dirección</TableCell>
-            <TableCell sx={{ color: '#c7c7c3' }}>Productos</TableCell>
-            {isAdmin && <TableCell sx={{ color: '#c7c7c3' }}>Acciones</TableCell>}
+            <TableCell>Nombre</TableCell>
+            <TableCell>Email</TableCell>
+            <TableCell>Teléfono</TableCell>
+            <TableCell>Dirección</TableCell>
+            <TableCell>Productos</TableCell>
+            {isAdmin && <TableCell>Acciones</TableCell>}
           </TableRow>
         </TableHead>
         <TableBody>
           {suppliers.map((s) => {
-            if (!s || !s._id) return null; 
-
-            console.log("ID que se está enviando a editar:", s._id);
+            if (!s || !s._id) return null;
 
             return (
-              <TableRow key={s._id} sx={{ '&:hover': { backgroundColor: '#3b4353' } }}>
-                <TableCell sx={{ color: '#ffffff' }}>{s.name || "-"}</TableCell>
-                <TableCell sx={{ color: '#ffffff' }}>{s.email || "-"}</TableCell>
-                <TableCell sx={{ color: '#ffffff' }}>{s.phone || "-"}</TableCell>
-                <TableCell sx={{ color: '#ffffff' }}>{s.address || "-"}</TableCell>
-                <TableCell sx={{ color: '#ffffff' }}>
+              <TableRow key={s._id}>
+                <TableCell>{s.name || "-"}</TableCell>
+                <TableCell>{s.email || "-"}</TableCell>
+                <TableCell>{s.phone || "-"}</TableCell>
+                <TableCell>{s.address || "-"}</TableCell>
+                <TableCell>
                   {Array.isArray(s.productsSupplied) ? s.productsSupplied.join(", ") : "-"}
                 </TableCell>
                 {isAdmin && s._id?.length === 24 && (
                   <TableCell>
-                    <Button onClick={() => navigate(`/suppliers/edit/${s._id}`)} sx={{ color: '#c7c7c3' }}>
+                    <Button onClick={() => navigate(`/suppliers/edit/${s._id}`)}>
                       Editar
                     </Button>
-                    <Button color="error" onClick={() => handleDelete(s._id)}>Eliminar</Button>
+                    <Button color="error" onClick={() => handleDelete(s._id)}>
+                      Eliminar
+                    </Button>
                   </TableCell>
                 )}
               </TableRow>
